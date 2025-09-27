@@ -5,7 +5,6 @@ public class Demo {
     }
 }*/
 
-
 void main()
 {
     IO.println("Wow !! Is it JAVA ??");
