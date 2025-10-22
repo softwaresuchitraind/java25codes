@@ -1,0 +1,29 @@
+github.com/mischavandenburg
+======================================
+HomeBrew
+=================
+racherdesktop.io
+rancher desktop wsl
+
+kubectl get pods -A
+k explain pods
+k explain deployment
+k run -h
+k create deployment
+k get pods
+k get pod nginx
+k get pods
+k get pods -o wide
+k delete pod nginx
+k exec -it nginx-docs -- /bin/bash
+tree
+apt install curl
+apt install iputils
+k exec -it
+Deployment
+==============
+kgp
+k get deployments.app
+k edit deployment.apps test 
+k describe deployments.app test
+k delete deployments.app  test

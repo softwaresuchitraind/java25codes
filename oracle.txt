@@ -1,0 +1,38 @@
+CREATE USER MYDB4PM IDENTIFIED BY MYDB4PM;
+ALTER USER MYDB4PM IDENTIFIED BY MYDB4PM;
+
+DDL
+=====
+CREATE
+-------
+#to create a new table/ a new db object(table,view,synonyms,sequence......etc)
+
+Syntax to create a new table in oracle
+------------------------------------------
+create table <table name>(<column name1><datatype>[size],<column name2><datatype>[size],...........)
+
+#without datatype we can not create a table
+
+datatype in oracle
+=====================
+-Numeric datatype
+-String/ Character datatype
+-Long datatype
+
+
+number
+====
+int 
+---
+    #Storing integer value only
+    #when we use "int" datatype on table number internally  datatype with max size is 38 digits
+
+number 
+----------
+# Storing both interger and float values
+#number(p)
+#number(p,s)-stores float value
+
+String/Character datatype
+================================
+
