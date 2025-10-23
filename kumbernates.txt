@@ -1,0 +1,110 @@
+VPC peering
+kubectl get ns
+kubectl get namespaces
+kubectl get all
+kubectl get all -n 
+kubecltl get nodes
+kubectl get pods -o wide -n kube-system
+kubectl get pods -o wide -n kube-system -v=2
+kubectl create namespaces test 
+
+crete/update k8s resoureces
+
+Imperative approach- using commands
+Declarative approach - in the form of manifest files
+
+k8s Manifest files
+
+RBAC
+========
+Role based access control
+
+>kubectl api-resoureces
+
+apiVersion: v1
+kind: Namespaces
+metadata: 
+    name: product-ns
+    lebels:
+        teamname: productinventory
+        dl: productinventoryteam
+
+----------------
+apiVersion: v1
+    kind: Namespaces
+    metadata: 
+        name: resourcequota
+        name: test-ns
+    spec:
+        hard:
+         cpu: "1"
+         memory: 1Gi
+         pods: "10"
+
+----------------------------
+
+kubectl create/apply -f <filename>
+kubectl update
+kubectl create  
+kubectl apply [create or update]
+kubectl delete
+
+
+diff between create and apply
+================================
+
+what is resource quota ?
+
+>vi test-ns.yaml
+>kubectl apply -f test-ns.yaml
+>kubectl describe ns test-ns
+>kubectl get ns test-ns -o yaml
+>kubectl get all -n test-ns
+>kubectl get all
+>kubectl get all --all-namespaces
+>kubectl get all -A 
+>kubectl get pods -A 
+>kubectl get pods -n test-ms 
+
+RBAC-Role based access control
+
+===========================
+Role
+RoleBinding
+clusturerole
+clusterrolebinding
+ServiceAccount
+
+Scheduling & maintence
+============
+Node selector
+Node Affinity
+POD Affinity/AniAffinity
+
+
+POD
+=======
+A Pod always runs on a Node.
+master node/worker node
+within the pod container
+#Pod is the smallest building block or basic unit of Scheduling in kubernate.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

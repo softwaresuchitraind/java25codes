@@ -1,3 +1,4 @@
+
 CREATE USER MYDB4PM IDENTIFIED BY MYDB4PM;
 ALTER USER MYDB4PM IDENTIFIED BY MYDB4PM;
 
@@ -35,4 +36,106 @@ number
 
 String/Character datatype
 ================================
+1. Non-Unicode datatypes
+    - these datatypes are storing localized data(eg English lang only)
+        >char(size)
+        >varchar2(size)
+2. Unicode datatypes
+    -these datatypes are storing globalized data(i.e all national languages)
+        >Nchar(size)
+        >Nvarchar2(size)
+
+    - "N" ---- national languages
+
+char(size)
+==========
+    - It is fixed datatypes(static)
+    - storing non-unicode char's in the form of 1 char = 1 bytes
+    - max.size is 2000 bytes(2000 chars = 2000 bytes)
+
+Nvarchar2(size)
+========================
+unicode also save
+
+Long:
+=========
+-it is a variable length datatype(dynamic)
+-storing non-unicode & unicode chars in the form 1 char = 1 bytes
+max-size is 2 gb.
+
+
+Eaddress Long
+==============
+memory will not weast
+
+
+Date datatypes
+=============================
+
+    -storing date and time information of a particular day.
+    -range of datatype : from '01-jan-4712BC' to '31-dec-9999AD'
+i> date 
+    '12:00:00 am' - by default
+    -oracle default date format is 'dd-mon-yyyy/yy hh:mi:ss'
+    ex:
+    '20-sep-2021 / 21 17:00:00'
+-date datatype is occupied 7 bytes memory(fixed memory)
+
+ii> timestamp
+    -storing date and time information of a particular day along with milliseconds
+     'dd-mon-yyyy/yy hh:mi:ss.ms'
+     1     1  2       1  1  1  4
+     -timestamp datatype is occupied 11 bytes memory(fixed memory)
+
+Raw & Long Raw
+===================
+    -storing image files/ audio file /video -------convert into ------------>binary format
+    -these datatypes are also called as "binary datatype"
+
+LOB datatypes
+=============
+    -large object datatypes
+
+    >Blob : binary large object ------> store image/audio/video file in the form of 01001010010101 
+    >Clob : Character large object--------> storing non-unicode char's
+    >NClob : national Character large object ------>storing unicode chars
+
+==============================================================================================
+
+1.non-unicode char'
+=========================
+    >char(size) ---------2000 bytes
+    >varchar2(size)-------4000 bytes
+    >Long ----------------2 gb
+    >Clob ----------------128 table
+
+    1.unicode char'
+=========================
+    >Nchar(size) ---------2000 bytes
+    >Nvarchar2(size)-------4000 bytes
+    >Long ----------------2 gb
+    >NClob ----------------128 table
+
+3. Binary data
+==============
+    >Raw -----------2000 bytes
+    >Long Raw ---------2 gb
+    >Blob--------------128 tb 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
