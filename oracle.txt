@@ -123,6 +123,207 @@ LOB datatypes
     >Blob--------------128 tb 
 
 
+DDL
+=========
+CREATE
+----------
+
+GRANT DBA TO MYDB4PM;
+SELECT * FROM TAB;
+HOST CLS
+SET LINESIZE 200
+SET PAGESIZE 50
+SQL> COLUMN TNAME FORMAT A20
+SQL> COLUMN TYPE FORMAT A15
+SQL> COLUMN CLUSTERID FORMAT A10
+desc <table_name>
+ COLUMN TNAME FORMAT A25
+ SET LINESIZE 150
+
+ ALTER
+ ===========
+    - To modify / change the structure of a table
+            >to change datatype and size of datatype of a column
+            >to add a new column to an existing column
+            >to change the name of a column
+            >to drop a column from a table
+    - sub commands of alter command is :
+
+i>Alter - modify
+=====================
+    to change datatype and size of datatype of a column
+
+Syntax
+========
+Alter table<talbel name> modify<column name><new datatype>[new size]
+ALTER TABLE STUDENT MODIFY SNAME VARCHAR2(20);
+
+ii> Alter - add
+=====================
+    to add a new column to an existing column
+
+Syntax
+=========
+Alter table<table_name> add<column name><datatype>[size]
+ALTER TABLE STUDENT ADD SADDRESS VARCHAR2(10);
+
+iii> Alter - rename
+=====================
+    to change the name of a column
+
+Syntax
+==========
+Alter table<table_name> rename column<old column name> to <new column name>
+ALTER TABLE STUDENT RENAME COLUMN SNAME TO STUDENT_NAME;
+ALTER TABLE STUDENT RENAME COLUMN SNAME TO STUDENTNAMES;
+
+
+IV> Alter - drop
+=====================
+    to drop a column from a table
+
+Syntax
+======
+alter table<table_name> drop column <column_name\>
+ALTER TABLE STUDENT DROP COLUMN SADDRESS;
+ALTER TABLE STUDENT DROP COLUMN SFEE;
+
+RENAME
+==========
+    - to change a table name in DB
+
+Syntax
+============
+Rename <old table name> to <new table name>
+
+ex
+======
+RENAME STUDENT SDETAILS;
+SELECT * FROM TAB;
+RNAME SDETAILS TO STUDENT;
+
+TRUNCATE
+=========
+    -to delete all rows from a table at a time
+    -deleting rows but not columns
+    -cannot delete a specific row from a table
+    -not supporting "where" clause condition.
+    -deleting rows are permanent
+INSERT INTO STUDENT VALUES(1023,'JONES','MUMBAI');
+TRUNCATE TABLE STUDENT;
+
+DROP
+=========
+    - to drop / delete a table(rows and columns ) from database memory.
+
+drop table table_name;
+
+SQL> DROP TABLE STUDENT;
+
+Note :
+==========
+    before oracle 10 g enterprise edittion once we drop a table then it is permanently dropped and we can not restore a table.
+from oracle 10g enterprise edition once we drop a table then it is temporarily droped and we can restore a table.
+
+New features in Oracle 10g enterprise edition
+===============================================
+    > Recyclebin
+    >flashback
+    >purge
+
+Recyclebin
+=================
+    - It is a pre-defined/system defined table.
+    - is storing the information about the dropped tables
+    - it is similar to windows recyclebin in computer.
+
+TO VIEW DROPPED TABLE information
+=========================================
+ DESC RECYCLEBIN;
+SELECT OBJECT_NAME,ORIGINAL_NAME FROM RECYCLEBIN;
+
+
+Flashback
+================
+    - it is a command is used to restore a table from recyclebin to database.
+
+Syntax
+===========
+flashback table <table_name> to before drop;
+
+FLASHBACK TABLE STUDENT TO BEFORE DROP;
+
+purge
+========
+    IT IS USED TO DROP a table from recyclebin permanently;
+        (or)
+    -it is used to drop a table from database permanently
+
+i) to drop a specific table from recyclebin
+============================================
+Syntax
+=======
+purge table><table_name>;
+
+purge table STUDENT;
+PURGE TABLE TEST2;
+
+ii> to drop all tables from recyclebin
+========================================
+Syntax
+====
+purge recyclebin;
+PURGE RECYCLEBIN;
+
+iii> to drop a table from database permanently.
+Syntax
+=========
+drop table <table_name> purge;
+
+DROP TABLE STUDENT PURGE;
+DML 
+=======
+
+INSERT
+========
+        - to insert a new row data into a table.
+
+Syntax1
+=======
+insert into <table_name> values(value1,value2,........);
+
+Syntax2
+===========
+insert into <table_name> (<list of columns>)values(<value1>,<value2>,....);
+
+Note : we can insert values for our required column only and remaining columns are taking null by default;
+
+Substitutional operators
+==============================
+i)& - to insert values to column dynamically (we can change value for column) 
+ii)&& - to insert fixed values to column( we can not change value for column). if we want to change value for
+        a column then we should "exit" from oracle db.
+
+Syntax1
+============
+insert into <table_name> values (&<column name1>,&<column name2>,......);
+
+ex :
+INSERT INTO EMPLOYEE VALUES(&EID,'&ENMAE',&SALARY);
+
+
+/ - re-executed lastly executed query.
+
+
+
+
+
+
+
+
+
+
+
 
 
 

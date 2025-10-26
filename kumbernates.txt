@@ -89,6 +89,83 @@ master node/worker node
 within the pod container
 #Pod is the smallest building block or basic unit of Scheduling in kubernate.
 
+Multi-container-pod or sidecar
+>kubectl api-resources 
+
+ImagePullBackoff/Error ImagePull 
+================================
+>vi mavenwebapppod.yaml
+>kubectl apply -f mavenwebapppod.yaml --dry-run=client
+>kubectl apply -f mavenwebapppod.yaml
+>kubectl apply -f mavenwebapppod.yaml --dry-run=server
+
+kubectl apply
+kubectl create
+kubectl update
+kubectl delete
+
+>kubectl get pods -n test-ns
+>kubectl describe pod mavenwebapppod -n test-pod
+>kubectl get nodes
+>kubectl get describe get nodes ip---1--2-
+>kubectl get all -n test-ns
+>kubectl get pods -n test-ns
+>kubectl get deployments -n test-ns
+>kubectl get rs -n test-ns
+>kubectl get pods -o wide -n test-ns
+>kubectl get pods -n test-ns
+>kubectl describe node ip-172-31-3-215
+
+Taints in master node.
+
+CKA
+CKAD
+CKS
+==========
+5
+=========
+kubectl get nodes
+kubectl get pods -n test-ns
+kubectl get pods -o wide -n test-ns
+kubectl get nodes
+kubectl get nodes -o wide
+kubectl get nodes -o wide  test-ns
+
+Service
+========
+curl -v 10.44.0.1:8080/maven-web-app-application/
+https://app.diagrams.net/
+
+
+Communication
+================
+Service
+  clusterIP
+  NodePort
+  LoadBalancer
+  Ingress
+
+>kubectl get pods -n kube-system
+
+>kubectl get all -n test-ns
+
+==
+>vi mavenwebapp.yaml
+>kubectl apply -f mavenwebapp.yaml
+>kubectl get all -n test-ns
+>kubectl get service -n test-ns
+>kubectl get all
+>kubectl describe svc mavenwebappsvc
+>curl -v 10.97.157.235 port:80
+
+NotePort
+===========
+6
+==============
+
+
+
+
 
 
 
