@@ -314,6 +314,328 @@ INSERT INTO EMPLOYEE VALUES(&EID,'&ENMAE',&SALARY);
 
 / - re-executed lastly executed query.
 
+CL SCR
+
+INSERT INTO EMPLOYEE VALUES(&EID,'&ENMAE',&&SALARY);
+
+update
+=========
+    -to update all rows in a table at a time.
+        (or)
+    -to update a specific row data in a table by using "where" condition.
+
+Syntax
+==========
+update<table_name> set <column name>=value1,<column name2>=<value2> where [<condition>];
+
+v
+
+
+SQL> SET PAGESIZE 100
+SQL> SET LINES 100
+
+
+SQL> SET PAGESIZE 100
+SQL> SET LINES 100
+SQL> UPDATE EMPLOYEE SET ENAME='SAI',SALARY=66000 WHERE EID=1031;
+
+UPDATE EMPLOYEE SET SALARY=18000 WHERE ENAME='CLACK';
+
+DELETE 
+==============
+    - to delete all rows data from a table
+    (or)
+    - to delete a specific row data from a table by using "where" condition.
+
+Syntax
+==========
+delete from <table_name>[where<condition>]
+
+DELETE FROM EMPLOYEE WHERE ENAME='CLACK';
+
+DELETE VS TRUNCATE
+=====================
+delete
+=========
+- can delete a specific row data from a table by using "where"
+-supporting "where" condition
+-temporary data deletion
+-can restore data by using rollback command.
+- deleting rows from a table one by one row so that execution speed is slow.
+
+
+
+TRUNCATE
+=====
+-not possible
+-not supporting "where" condition
+-permanent data deletion
+-can not restore data by using rollback command.
+-deleting rows from a table as a set of rows
+so that exection speed is fast.
+
+
+New commands
+====================
+    -insert all
+    -Merge
+
+DQL/DRl
+==========
+ - to retrieving all rows data from a table at a time
+ (or)
+ -to retrive a specific row data from a table by using "where" condition.
+
+ Syntax
+ ============
+ select * /<list of columns> from 
+
+ Note
+ ===========
+  - if we want to display a big data table in proper systematically in sqlplus editor then we should set some properties
+for sqlplus environment.
+
+1>PAGESIZE N;
+==============
+    -by default a page can display 14 rows
+    1 page = 14 rows
+
+- "n" no.of rows in a page.
+
+    table -----------100 rows------------>8 pages 
+eg
+=======
+set PAGESIZE 100;
+set pagesize 200;
+set pagesize 500;
+
+2> Linesize N;
+
+2)Line N
+===========
+By default system is allocating 80 bytes of memory for each line.
+
+1 row data = 100 chars
+10 rows -------------10 lines 
+
+-----------------------------------80 chars--------------------------------------(80 bytes)
+---------------------------------------nextline
+----------------------------------
+--------------------------
+----------------------------------------------------------------------
+-------------------------------------------------------20 chars line 
+
+set lines 100;
+SQL> set pagesize 50001
+SP2-0267: pagesize option 50001 out of range (0 through 50000)
+SQL> set linesize 32768
+SP2-0267: linesize option 32768 out of range (1 through 32767)
+
+CL SCR;
+==========12=================================================
+How to create a new table from the old table
+===================================================
+create table<new table_name> as select * from <old table_name>;
+
+CREATE TABLE NEWDEPT AS SELECT * FROM DEPT;
+
+Note- in this level, we are created a new table with copy of all rows and columns from the old table.
+
+syntax2: to copy specific column data from old table to new table.
+================================================================
+
+create table <new table_name> as select <col1>,<clol2>,....from <old_table>
+
+SQL> CREATE TABLE SPCOLUMN AS SELECT EMPNO,ENAME,SAL FROM EMP;
+
+syntax3: to copy specific rows data from old table
+=======================================================
+create table <new table_name> as select * from <old table_name> where <condition>
+
+SQL> CREATE TABLE SPROWS AS SELECT * FROM EMP WHERE DEPTNO=20;
+
+syntax4
+========
+create a new table without copy rows data from a table
+=====================================================
+create table <new table_name> as select * from <old table_name> where <false condition>;
+How to copy data from one table to another table
+======================================================
+syntax
+========
+insert into<destination table name> select * from <source table name>
+
+Note: 
+1. both tables (source & destination) structures are same.
+2. order of columns must be same
+3. datatype of column must match
+
+INSERT INTO DUMMYDEPT SELECT * FROM DEPT;
+Insert all :
+================
+ insert : to insert new data into a single table.
+ insert all : to insert an existing table data(old data) into multiple tables at a time.
+
+syntax
+=========
+insert all into <table name1> values (<column name1>,<column name2>,....));
+insert all into <table name1> values (<column name1>,<column name2>,....));
+------------------------------------------------------------------------
+-------------------------------------------------------------------------
+-------------------------------------------------------------------------
+insert<table name n> values(<column name1>,<column name2>,....));
+
+EMPTY NEW TABLE
+========================
+MERGE 
+=====
+    - is used to transfer data from source table to destination table.
+            -if data is matching in both tables then those matching data is override on destination table by
+             using "update" command.
+
+            -if data is not matching then unmatching data is transfer from source table to destination table.
+
+              Merge = update + insert
+
+syntax
+=========
+Merge into   <destination table name><destination table alias name> using <source table name>
+<source table alias name> on <joining condition>
+when matched then
+update set <destination table alias name>.<column name>=<source table alias name>.<column name>
+when not matched then
+insert (<destination table columns>)values()(<source table columns>)
+
+
+==============13=============
+Alias name:
+===============
+    It is  temporary/alternate name for column and also table.
+
+    i>column level
+    ========================
+        we are creating alias name for column names.
+    ii>table level
+    ===============
+        we are creating alias name for table name.
+
+syntax
+======
+select<column1 name1><column alias name1>,<column1 name1><column alias name1>,... from <tn><table alias name>;
+
+
+SQL> SELECT DEPTNO X,DNAME Y,LOC Z FROM DEPT D;
+
+         X Y              Z
+---------- -------------- -------------
+        10 ACCOUNTING     NEW YORK
+        20 RESEARCH       DALLAS
+        30 SALES          CHICAGO
+        40 OPERATIONS     BOSTON
+
+SQL> MERGE INTO DEPT D USING SDEPT S ON(D.DEPTNO=S.DEPTNO)
+  2  WHEN MATCHED THEN
+  3  UPDATE SET D.DNAME=S.DNAME,D.LOC=S.LOC
+  4  WHEN NOT MATCHED THEN
+  5  INSERT(D.DEPTNO,D.DNAME,D.LOC)VALUES(S.DEPTNO,S.DNAME,S.LOC);
+
+
+
+TRANSACTION CONTROL languages
+=================================
+
+
+
+Concatenation Operator(||)
+=============================
+- is used to join/ add two string expressions by using select statement.
+
+syntax
+==========
+<string1>||<string2>||<string3>||<string4>
+
+ex:
+SELECT 'MR.'||ENAME||'IS WORKING AS A'||JOB FROM EMP;
+
+DISTINCT KEYWORD
+=======================
+ - is used to eliminate duplicate values and display unique values.
+
+syntax
+=======
+SQL> SELECT DISTINCT JOB FROM EMP;
+
+JOB
+---------
+ANALYST
+CLERK
+SALESMAN
+MANAGER
+PRESIDENT
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

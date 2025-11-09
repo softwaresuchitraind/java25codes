@@ -162,6 +162,99 @@ NotePort
 ===========
 6
 ==============
+POD ---> pod represents running process in k8s.Pod will have one or more containers.Pod always runs on node.
+
+Services
+clusterIP
+NodePort
+
+vi multicontatinerport.yaml
+
+What is FQDN ?
+fully Qualified domain name
+
+======================
+
+
+=================================================
+pending- It is pending for some reason it's scheduled. It can be due to insufficient resources or there 
+could be some other resond
+
+kubectl describe pod<podName>
+
+CrashloopBackup
+================
+>kubectl get all
+>kubectk logs <podName>
+>kubectl logs <podName> -c <containerName>
+
+
+
+ImagePullBackoff/ErrorImagePull
+==================================
+
+
+
+running
+CreateContainerConfigError
+    configMap
+    Secrets
+
+kubectl get nodes
+kubectl describe node <NodeName>
+kubectl delete all -all -n test-ns
+
+Pod Concepts
+================
+pod is ephemeral
+
+Replication Controller
+
+ReplicaSet -------> ReplicaSet is next generation(advanced version) of Replication Controller.
+ReplicaSet also manages the pod life cycle. It will create and manage pods and we scale in scale out  ReplicaSet
+
+only differnce b/w rc and rs is Selector support.
+
+Rc Supports only Equality Based Selector.
+
+RS supports both Equality and Set(Expressions) based selectors.
+
+key:value
+
+selector * from employee where empname='Balaji';
+
+Select * from employee where employeename in ('Balaji' ,'Balaji reddy');
+Select * from employee where employeename npt in ('Balaji' ,'Balaji reddy');
+
+DaemonSet(DS)
+==========
+
+====================8======================================================
+deployments
+=================
+Deployment strategy
+
+Strategies
+==========
+    Recreate
+    Rolling update
+>kubectl rollout status deployment mavenwebapp
+>kubectl rollout history status deployment mavenwebapp -n test-ns
+>kubectl rollout history status deployment mavenwebapp -n test-ns --revision 1
+>kubectl get ep -n test-ns
+==========9==============================================================================
+app.diagram.net
+
+canaroy Deployment(Slowly will increase the traffic new version app)
+
+https://istio.io/
+
+POD AutoScaler
+
+HPA -->Horizontal Pod AutoScaler(****)
+VPA -->Vertical POD AutoScaler
+
+
 
 
 
