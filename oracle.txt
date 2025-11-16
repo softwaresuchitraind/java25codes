@@ -574,6 +574,167 @@ MANAGER
 PRESIDENT
 
 
+======14===================
+Alias
+======
+===============================15===========================
+
+NOT
+========
+-return all values except the given conditional value in the query.
+
+syntax
+==========
+    where not<condition1> and mot <condition2>
+
+ex
+=====
+wa to display employee who are not working in deptno 10 and 30
+
+SQL> SELECT * FROM EMP WHERE NOT DEPTNO=10 AND NOT DEPTNO=20;
+Set operators
+============
+- are used to combine the result of two select statements as a single set of values.
+-union,union all,intersect,minus
+
+synrax
+=========
+<select query1><set operator><select query2>
+
+Ex
+======
+
+A={10,20,30}
+B={30,40,50}
+
+union
+========
+AUB - > {10,20,30,40,50}
+
+-combined all set values without duplicate values
+
+Union all
+===========
+-combined all set values with duplicate values
+AUB - > {10,20,30,30,40,50}
+
+intersect
+===========
+    -return common values.
+
+A i B = {30}
+
+minus
+===========
+    - returns all values from left set which are not found in right set.
+
+A-B = {10,20}
+B-A = {40,50}
+
+EX- ALL EMPLOYEES DETAILS
+============================
+
+SQL> SELECT * FROM EMP_CHENNAI;
+
+       EID ENAME             SAL
+---------- ---------- ----------
+      1021 SAI             85000
+      1024 WARD            28000
+      1025 MILLER          15000
+
+SQL> SELECT * FROM EMP_HYD;
+
+       EID ENAME             SAL
+---------- ---------- ----------
+      1021 SAI             85000
+      1022 JOHN            45000
+      1023 ADAMS           37000
+
+SQL> SELECT * FROM EMP_HYD UNION SELECT * FROM EMP_CHENNAI;
+
+       EID ENAME             SAL
+---------- ---------- ----------
+      1021 SAI             85000
+      1022 JOHN            45000
+      1023 ADAMS           37000
+      1024 WARD            28000
+      1025 MILLER          15000
+
+SQL> SELECT * FROM EMP_HYD UNION ALL SELECT * FROM EMP_CHENNAI;
+
+       EID ENAME             SAL
+---------- ---------- ----------
+      1021 SAI             85000
+      1022 JOHN            45000
+      1023 ADAMS           37000
+      1021 SAI             85000
+      1024 WARD            28000
+      1025 MILLER          15000
+
+6 rows selected.
+EMPLOYEE WORKING IN bothLOC
+
+
+SQL> SELECT * FROM EMP_HYD INTERSECT SELECT * FROM EMP_CHENNAI;
+
+
+SQL> SELECT * FROM EMP_HYD INTERSECT SELECT * FROM EMP_CHENNAI;
+
+       EID ENAME             SAL
+---------- ---------- ----------
+      1021 SAI             85000
+
+EMPLOYEE WHO ARE WORKING IN HYD BUT NOT IN CHENAI;
+=======================================================
+SQL> SELECT * FROM EMP_HYD MINUS SELECT * FROM EMP_CHENNAI;
+
+
+SQL> SELECT * FROM EMP_HYD MINUS SELECT * FROM EMP_CHENNAI;
+
+       EID ENAME             SAL
+---------- ---------- ----------
+      1022 JOHN            45000
+      1023 ADAMS           37000
+
+
+SQL> SELECT * FROM EMP_CHENNAI MINUS SELECT * FROM EMP_HYD;
+
+       EID ENAME             SAL
+---------- ---------- ----------
+      1024 WARD            28000
+      1025 MILLER          15000
+
+BASIC RULES
+===========
+1. both select queries should have a same no.of columns in the list.
+2.those columns datatypes must be in both select queries.
+
+SQL> SELECT * FROM EMP_HYD UNION SELECT EID,ENAME FROM EMP_CHENNAI;
+SELECT * FROM EMP_HYD UNION SELECT EID,ENAME FROM EMP_CHENNAI
+*
+ERROR at line 1:
+ORA-01789: query block has incorrect number of result columns
+
+
+SQL> SELECT EID,ENAME FROM EMP_HYD UNION SELECT EID,ENAME FROM EMP_CHENNAI;
+
+       EID ENAME
+---------- ----------
+      1021 SAI
+      1022 JOHN
+      1023 ADAMS
+      1024 WARD
+      1025 MILLER
+
+
+
+SQL> SELECT EID,ENAME FROM EMP_HYD UNION SELECT ENAME,EID FROM EMP_CHENNAI;
+SELECT EID,ENAME FROM EMP_HYD UNION SELECT ENAME,EID FROM EMP_CHENNAI
+       *
+ERROR at line 1:
+ORA-01790: expression must have same datatype as corresponding expression
+
+
 
 
 
