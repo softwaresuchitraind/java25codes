@@ -263,6 +263,16 @@ What is heapSerter in K8s ?
 Helm is a package manager for deploying k8s applications.
 RBAC- roll based access control
 
+================================================================================
+>helm repo list
+>helm repo update
+>k9s
+>helm ls -a
+>helm show values 
+>helm repo update
+>helm ls -a
+>k9s
+>
 
 
 

@@ -734,6 +734,689 @@ SELECT EID,ENAME FROM EMP_HYD UNION SELECT ENAME,EID FROM EMP_CHENNAI
 ERROR at line 1:
 ORA-01790: expression must have same datatype as corresponding expression
 
+==========================================================16===============================
+-Special operators
+==================
+(+ve) operators
+===============
+
+IN
+-----
+-comparing group of values in a single condition in the query.
+
+ex
+=
+waq to display employee who are working as a manager \
+
+
+SQL> SELECT * FROM EMP WHERE JOB IN('ANALYST','PRESIDENT','MANAGER');
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7839 KING       PRESIDENT            17-NOV-81       5000                    10
+      7698 BLAKE      MANAGER         7839 01-MAY-81       2850                    30
+      7782 CLARK      MANAGER         7839 09-JUN-81       2450                    10
+      7566 JONES      MANAGER         7839 02-APR-81       2975                    20
+      7788 SCOTT      ANALYST         7566 19-APR-87       3000                    20
+      7902 FORD       ANALYST         7566 03-DEC-81       3000                    20
+
+6 rows selected.
+
+
+NOT IN
+=========
+SQL> SELECT * FROM EMP WHERE JOB NOT IN('ANALYST','PRESIDENT','MANAGER');
+
+between
+==========
+- RANGE VALUES
+
+EX- WHOSE SALRAY BETWEEN 1500-3000.
+
+SQL> SELECT * FROM EMP WHERE SAL BETWEEN 1500 AND 3000;
+
+EX:
+Waq to display employee who are joined in the year 1981.
+
+SQL> SELECT * FROM EMP WHERE HIREDATE BETWEEN '01-JAN-81' AND '31-DEC-81';
+SQL> SELECT * FROM EMP WHERE HIREDATE BETWEEN '01-JAN-81' AND '31-DEC-81';
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7839 KING       PRESIDENT            17-NOV-81       5000                    10
+      7698 BLAKE      MANAGER         7839 01-MAY-81       2850                    30
+      7782 CLARK      MANAGER         7839 09-JUN-81       2450                    10
+      7566 JONES      MANAGER         7839 02-APR-81       2975                    20
+      7902 FORD       ANALYST         7566 03-DEC-81       3000                    20
+      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600        300         30
+      7521 WARD       SALESMAN        7698 22-FEB-81       1250        500         30
+      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250       1400         30
+      7844 TURNER     SALESMAN        7698 08-SEP-81       1500          0         30
+      7900 JAMES      CLERK           7698 03-DEC-81        950                    30
+
+
+NOT BETWEEN
+================
+SQL> SELECT * FROM EMP WHERE SAL NOT BETWEEN 1500 AND 3000;
+
+SQL> SELECT * FROM EMP WHERE HIREDATE NOT BETWEEN '01-JAN-81' AND '31-DEC-81';
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7788 SCOTT      ANALYST         7566 19-APR-87       3000                    20
+      7369 SMITH      CLERK           7902 17-DEC-80        800                    20
+      7876 ADAMS      CLERK           7788 23-MAY-87       1100                    20
+      7934 MILLER     CLERK           7782 23-JAN-82       1300                    10
+
+IS NULL 
+==========
+ -comparing nulls in a table.
+
+SQL> SELECT * FROM EMP WHERE COMM IS NULL;
+SQL> SELECT * FROM EMP WHERE COMM IS NOT NULL;
+
+SQL> SELECT * FROM EMP WHERE COMM=300;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600        300         30
+SQL> SELECT * FROM EMP WHERE COMM=0;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7844 TURNER     SALESMAN        7698 08-SEP-81       1500          0         30
+
+SQL> SELECT * FROM EMP WHERE COMM=NULL;
+
+no rows selected
+
+SQL> SELECT * FROM EMP WHERE COMM IS NULL;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7839 KING       PRESIDENT            17-NOV-81       5000                    10
+      7698 BLAKE      MANAGER         7839 01-MAY-81       2850                    30
+      7782 CLARK      MANAGER         7839 09-JUN-81       2450                    10
+      7566 JONES      MANAGER         7839 02-APR-81       2975                    20
+      7788 SCOTT      ANALYST         7566 19-APR-87       3000                    20
+      7902 FORD       ANALYST         7566 03-DEC-81       3000                    20
+      7369 SMITH      CLERK           7902 17-DEC-80        800                    20
+      7876 ADAMS      CLERK           7788 23-MAY-87       1100                    20
+      7900 JAMES      CLERK           7698 03-DEC-81        950                    30
+      7934 MILLER     CLERK           7782 23-JAN-82       1300                    10
+
+      SQL> SELECT * FROM EMP WHERE COMM IS  NOT NULL;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600        300         30
+      7521 WARD       SALESMAN        7698 22-FEB-81       1250        500         30
+      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250       1400         30
+      7844 TURNER     SALESMAN        7698 08-SEP-81       1500          0         30
+
+
+Working with null
+==================
+- Generally in db NULL is called as Unknown/Undefined value.
+
+-NULL !=0
+null != space
+
+SQL> SELECT ENAME,JOB,SAL,COMM,SAL+COMM FROM EMP WHERE ENAME='ALLEN';
+
+ENAME      JOB              SAL       COMM   SAL+COMM
+---------- --------- ---------- ---------- ----------
+ALLEN      SALESMAN        1600        300       19
+
+=======================17==============================================================
+
+NOTE 
+======
+- Generally if any arithmatic operator is performing some operation with NULL then it again return NULL.
+
+Ex
+=====
+if x = 1000;
+i>x+null ==============>1000+null===============>null
+ii>x-null=============>1000-null===============>null    
+iii>x*null=============>1000*null===============>null
+iv>x/null=============>1000/null===============>null
+
+NVL(EXP1,EXP2)
+====================
+-NVL stands for null value
+-predefined function which is used replace a user defined value in place of NULL
+
+10---------------------->null
+
+> if EXP1 is null ---------->then -----------------> EXP2 value(Userdefined value)
+
+Ex :   NVL(null,0)------------>
+       NVL(null,100)------------>100
+       NVL(null,50)------------->50
+
+>if EXP1 is not null---------->then ------------returns--------->EXP1 value only
+
+ex:
+
+NVL(0,0)------->0
+NVL(0,100)---------->0
+NVL(0,50)-------->0
+NVL(50,100)------->50
+NVL(100,50)-------->100
+
+SQL> SELECT NVL(NULL,0) FROM DUAL;
+
+NVL(NULL,0)
+-----------
+          0
+
+SQL> SELECT ENAME,JOB,SAL,COMM,SAL+NVL(COMM,0) FROM EMP WHERE ENAME='SMITH';
+
+ENAME      JOB              SAL       COMM SAL+NVL(COMM,0)
+---------- --------- ---------- ---------- ---------------
+SMITH      CLERK            800                        800
+
+
+SQL> SELECT ENAME,JOB,SAL,COMM,SAL+NVL(COMM,100) FROM EMP WHERE ENAME='SMITH';
+
+ENAME      JOB              SAL       COMM SAL+NVL(COMM,100)
+---------- --------- ---------- ---------- -----------------
+SMITH      CLERK            800                          900
+
+
+SQL> SELECT ENAME,JOB,SAL,COMM,SAL+NVL(COMM,100) FROM EMP WHERE ENAME='ALLEN';
+
+ENAME      JOB              SAL       COMM SAL+NVL(COMM,100)
+---------- --------- ---------- ---------- -----------------
+ALLEN      SALESMAN        1600        300              1900
+
+NVL2(EXP1,EXP2,EXP3)
+======================
+-It is an extension of NVL()
+-having 3 arguments
+
+-if EXP1 is null ------------>returns ------------>EXP3 VALUE(USER DEFINED VALUE)
+
+EX
+==
+NVL2(null,100,200)--------->200
+SQL> SELECT NVL2(NULL,100,200) FROM DUAL;
+
+-if EXP1 IS not null -----------> returns ------------->EXP2 VALUE(USER DEFINED VALUE)
+NVL2(0,100,200)--------->100
+NVL2(500,50,0)----------->50
+
+ex
+====
+waq to update all employee commissions in a table based on the following conditions
+
+i> if employee commission is null then update employee commission as 800
+ii>if employee commission is not null then update employee commission as comm+300
+
+
+SQL> UPDATE EMP SET COMM=NVL2(COMM,COMM+300,800);
+
+14 rows updated.
+
+LIKE:
+=========
+-comparing a specific string char pattern in a table.
+-when we use like operator we should use the following
+'wildcard operstors'
+
+i> %    : it represent the remaining group of char's after selected char in the expression.
+ii>_    : counting a single char in expression.
+
+
+Ex
+=====
+    Ename 
+    =====
+    SAI
+    SMITH
+    suresh
+    SCO
+
+    ====================
+
+Ex
+=====
+waq emp whose name starts with S
+
+SQL> SELECT * FROM EMP WHERE ENAME LIKE 'S%';
+
+sol:
+==========
+SELECT * FROM EMP WHERE ENAME LIKE 'S';//no result
+
+waq to fetch employee details whose name is haing 3 chars?
+sol : select * from emp where ename like'---';(sai,anu)
+
+===================18===================================================
+
+
+WHOSE NAME END WITH 'R'
+
+SQL> SELECT * FROM EMP WHERE ENAME LIKE 'S%';
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7788 SCOTT      ANALYST         7566 19-APR-87       3000                    20
+      7369 SMITH      CLERK           7902 17-DEC-80        800                    20
+
+SQL> SELECT * FROM EMP WHERE ENAME LIKE '%R';
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7844 TURNER     SALESMAN        7698 08-SEP-81       1500          0         30
+      7934 MILLER     CLERK           7782 23-JAN-82       1300                    10
+
+
+ex
+====
+to display employee whose name is having "i"?
+
+SQL> SELECT * FROM EMP WHERE ENAME LIKE '%I%';
+
+SQL> SELECT * FROM EMP WHERE ENAME LIKE '%I%';
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7839 KING       PRESIDENT            17-NOV-81       5000                    10
+      7369 SMITH      CLERK           7902 17-DEC-80        800                    20
+      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250       1400         30
+      7934 MILLER     CLERK           7782 23-JAN-82       1300                    10
+
+ex=
+
+whose name is having 4 chars ?
+
+SQL> SELECT * FROM EMP WHERE ENAME LIKE '____';
+
+SQL> SELECT * FROM EMP WHERE ENAME LIKE '____';
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7839 KING       PRESIDENT            17-NOV-81       5000                    10
+      7902 FORD       ANALYST         7566 03-DEC-81       3000                    20
+      7521 WARD       SALESMAN        7698 22-FEB-81       1250        500         30
+
+SQL> SELECT * FROM EMP WHERE ENAME LIKE '_ _ _ _';
+
+no rows selected
+
+EX:
+====
+whose name 2nd char is 'O'?
+
+SQL> SELECT * FROM EMP WHERE ENAME LIKE '_O%';
+
+SQL> SELECT * FROM EMP WHERE ENAME LIKE '_O%';
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7566 JONES      MANAGER         7839 02-APR-81       2975                    20
+      7902 FORD       ANALYST         7566 03-DEC-81       3000                    20
+
+ex
+==
+emp who are joined in 1981
+
+SQL> SELECT * FROM EMP WHERE HIREDATE LIKE '%81';
+
+
+SQL> SELECT * FROM EMP WHERE HIREDATE LIKE '%81';
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7839 KING       PRESIDENT            17-NOV-81       5000                    10
+      7698 BLAKE      MANAGER         7839 01-MAY-81       2850                    30
+      7782 CLARK      MANAGER         7839 09-JUN-81       2450                    10
+      7566 JONES      MANAGER         7839 02-APR-81       2975                    20
+      7902 FORD       ANALYST         7566 03-DEC-81       3000                    20
+      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600        300         30
+      7521 WARD       SALESMAN        7698 22-FEB-81       1250        500         30
+      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250       1400         30
+      7844 TURNER     SALESMAN        7698 08-SEP-81       1500          0         30
+      7900 JAMES      CLERK           7698 03-DEC-81        950                    30
+
+10 rows selected.
+
+EX 
+===
+ to display employee who are joined in month of "december"?
+
+SQL> SELECT * FROM EMP WHERE HIREDATE LIKE '%DEC%';
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7902 FORD       ANALYST         7566 03-DEC-81       3000                    20
+      7369 SMITH      CLERK           7902 17-DEC-80        800                    20
+      7900 JAMES      CLERK           7698 03-DEC-81        950                    30
+
+
+LIKE OPERATOR WITH SPECIAL Character
+===================================
+SQL> SELECT * FROM TEST
+  2  ;
+
+       EID ENAME
+---------- ----------
+      1021 SMI_TH
+      1022 ALL@EN
+      1023 MI#LLER
+      1024 _WARD
+      1025 WAR%NER
+      1026 ADAMS%
+
+6 rows selected.
+
+WHOSE NAME CONTAIN @
+
+SQL> SELECT * FROM TEST WHERE ENAME LIKE '%@%';
+
+       EID ENAME
+---------- ----------
+
+
+TO display employee whose name contain "#"?
+
+SQL> SELECT * FROM TEST WHERE ENAME LIKE '%@%';
+
+       EID ENAME
+---------- ----------
+      1022 ALL@EN
+
+SQL> SELECT * FROM TEST WHERE ENAME LIKE '%#%';
+
+       EID ENAME
+---------- ----------
+      1023 MI#LLER
+
+whose name is having _ 
+=============================   
+whose name is having %
+
+Note
+========
+
+-Generally "%,_" -------------------->by default "wildcard operators" but not special char's.
+- treat as special char's then we use "escape '\'" statement.
+
+SQL> SELECT * FROM TEST WHERE ENAME LIKE '%\_%' ESCAPE '\';
+
+SQL> SELECT * FROM TEST WHERE ENAME LIKE '%\_%'ESCAPE'\';
+
+       EID ENAME
+---------- ----------
+      1021 SMI_TH
+      1024 _WARD
+
+SQL> SELECT * FROM TEST WHERE ENAME LIKE '%\%%'ESCAPE'\';
+
+       EID ENAME
+---------- ----------
+      1025 WAR%NER
+      1026 ADAMS%
+
+SQL> SELECT * FROM EMP WHERE ENAME  NOT LIKE 'S%';
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7839 KING       PRESIDENT            17-NOV-81       5000                    10
+      7698 BLAKE      MANAGER         7839 01-MAY-81       2850                    30
+      7782 CLARK      MANAGER         7839 09-JUN-81       2450                    10
+      7566 JONES      MANAGER         7839 02-APR-81       2975                    20
+      7902 FORD       ANALYST         7566 03-DEC-81       3000                    20
+      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600        300         30
+      7521 WARD       SALESMAN        7698 22-FEB-81       1250        500         30
+      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250       1400         30
+      7844 TURNER     SALESMAN        7698 08-SEP-81       1500          0         30
+      7876 ADAMS      CLERK           7788 23-MAY-87       1100                    20
+      7900 JAMES      CLERK           7698 03-DEC-81        950                    30
+      7934 MILLER     CLERK           7782 23-JAN-82       1300                    10
+
+12 rows selected.
+
+FUNCTIONS
+===========
+-To perform some task and return some value.
+    1. Pre-defined FUNCTIONS
+            -use in SQL & PL/SQL.
+    2. User-defined FUNCTIONS
+            -by using PL/SQL.
+
+1.Pre-defined FUNCTIONS
+==========================
+    i)Single row function(scalar finction)
+    ii)multiple row functions(grouping functions)
+
+i)single row function(scalar functions)
+=======================================
+-return a single value.
+        i)numeric functions
+        ii)string functions
+        iii)date functions
+        iv)conversion functions
+        v)general functions
+
+syntax to call a function
+==========================
+Select <fname>(values) from dual;
+
+What is Dual?
+==============
+    -pre-defined/system defined table.
+    -having only one row & one column.
+    -used to test functions functionalites.
+    -is also called as "Dummy table" in oracle.
+
+Ex:
+Desc dual;
+select * from dual;
+
+
+i)numeric functions
+========================
+ABS()
+=====
+    -to convert(-ve) sign values into (+ve) sign values.
+
+syntax
+========
+abs(number)
+
+
+SQL> SELECT ENAME,SAL,COMM,ABS(COMM-SAL) FROM EMP;
+
+SQL> SELECT ENAME,SAL,COMM,ABS(COMM-SAL) FROM EMP;
+
+SQL> SELECT ABS(-12) FROM DUAL;
+
+  ABS(-12)
+----------
+        12
+
+==================================================================================
+CEIL():
+=======
+    - return a value which is more than or equal to the given expression.
+
+syntax
+======
+    ceil(number)
+
+ex
+====
+SLECT CEIL(9.3) FROM DUAL;
+
+SQL> SELECT CEIL(9.3) FROM DUAL;
+
+CEIL(9.3)
+----------
+         10
+
+SQL> SELECT CEIL(-9.3) FROM DUAL;
+
+CEIL(-9.3)
+-----------
+         -9
+
+FLOOR()
+=========
+    -return a value which is less than or equal to the given expression.
+
+syntax
+======
+    floor(number)
+
+ex
+====
+SLECT FLOOR(9.3) FROM DUAL;
+
+SQL> SELECT FLOOR(9.3) FROM DUAL;
+
+FLOOR(9.3)
+-----------
+         9
+
+SQL> SELECT FLOOR(-9.3) FROM DUAL;
+
+FLOOR(-9.3)
+------------
+         -10
+
+
+MOD():
+    - return reminder value from a given expression
+
+syntax
+==========
+    mod(number1,number2)
+
+ex
+==
+SQL> SELECT MOD(10,2) FROM DUAL;
+
+ MOD(10,2)
+----------
+         0
+
+POWER()
+==========
+    -return power of given expression
+
+SQL> SELECT POWER(2,3) FROM DUAL;
+
+POWER(2,3)
+----------
+         8
+
+ROUND()
+============
+    -return the nearest value of the given expression.
+
+syntax
+-----------
+    round(number,digit)
+
+
+SQL> SELECT ROUND(34.45) FROM DUAL;
+
+ROUND(34.45)
+------------
+          34
+
+SQL> SELECT ROUND(34.50) FROM DUAL;
+
+ROUND(34.50)
+------------
+          35
+
+SQL> SELECT ROUND(34.45) FROM DUAL;
+
+ROUND(34.45)
+------------
+          34
+
+SQL> SELECT ROUND(34.50) FROM DUAL;
+
+ROUND(34.50)
+------------
+          35
+
+
+TRUNC()
+==========
+    -return the exact value from given expression.
+
+syntax
+========
+trunc
+
+
+SQL> SELECT TRUNC(34.45) FROM DUAL;
+
+TRUNC(34.45)
+------------
+          34
+
+SQL> SELECT TRUNC(34.45) FROM DUAL;
+
+TRUNC(34.45)
+------------
+          34
+
+SQL> SELECT TRUNC(34.50) FROM DUAL;
+
+TRUNC(34.50)
+------------
+          34
+
+SQL> SELECT TRUNC(34.60) FROM DUAL;
+
+TRUNC(34.60)
+------------
+          34
+
+
+STRING FUNCTIONS
+================
+
+LENGTH():
+=============
+        -return length of given string.
+
+
+syntax
+===========
+    length(string)
+
+SQL> SELECT LENGTH('HELLO') FROM DUAL;
+
+LENGTH('HELLO')
+---------------
+              5
+
+SQL> SELECT LENGTH('WEL COME') FROM DUAL;
+
+LENGTH('WELCOME')
+-----------------
+                8
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
