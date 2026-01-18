@@ -1405,6 +1405,226 @@ LENGTH('WELCOME')
 -----------------
                 8
 
+LOWER()
+==========
+    -to convert upper case char's into lower case char's.
+
+SQL> SELECT LOWER('HELLO') FROM DUAL;
+
+LOWER
+-----
+hello
+
+UPPER()
+==========
+    -to convert lower case char's into upper case char's.
+
+INITCAP()
+==========
+    - to convert first char is capital in the expression.
+
+syntax
+=======
+
+SQL> SELECT INITCAP('welcome') from DUAL;
+
+INITCAP
+-------
+Welcome
+
+SQL> SELECT INITCAP('HELLO') FROM DUAL;
+
+INITC
+-----
+Hello
+
+20=====================================
+================================================================================================
+LTRIM() & RTRIM()
+=========================
+LTRIM() - to remove unwanted chars/spaces from left side of given string.
+RTRIM() - to remove unwanted chars/spaces from right side of given string.
+
+
+syntax
+=======
+ltrim(String1,[string2])
+rtrim(string1,[string2])
+
+
+TRIM():
+========
+-COMBINATION OF LTRIM() & RTRIM()
+-to remove unwanted characters and spaces from both side of a given string.
+
+syntax
+=========
+trim('trimming char' from string)
+
+LPAD() & RPAD()
+===================
+    LPAD() : filling a string with a specific char on left side of given string.
+    RPAD() : filling a string with a specific char on right side of given string.
+
+syntax
+====
+lpad(string1,length,string2)
+rpad(string1,length,string2)
+
+ex
+=========
+SQL> SELECT TRIM('X' FROM 'XXXXSAIXXX') FROM DUAL;
+
+TRI
+---
+SAI
+
+SQL> SELECT LPAD('HELLO',3) FROM DUAL;
+
+LPA
+---
+HEL
+
+SQL> SELECT LPAD('HELLO',10) FROM DUAL;
+
+LPAD('HELL
+----------
+     HELLO
+
+SQL> SELECT LPAD('HELLO',10,'@') FROM DUAL;
+
+LPAD('HELL
+----------
+@@@@@HELLO
+
+SQL> SELECT RPAD('HELLO',10,'$') FROM DUAL;
+
+
+CONCAT():
+=================
+    -adding two string expressions
+
+    SQL> SELECT CONCAT('GOOD','AFTERNOON') FROM DUAL;
+
+CONCAT('GOOD'
+-------------
+GOODAFTERNOON
+
+
+REPLACE()
+=============
+-to replace one string with another string
+
+replace(string1,string2,str3);
+============================
+SQL> SELECT REPLACE('HELLO','ELL','AB') FROM  DUAL;
+
+REPL
+----
+HABO
+
+TRANSLATE()
+============
+- to translate a single char by char.
+
+syntax
+--------
+translate(string1,string2,string3);
+
+
+SQL> SELECT TRANSLATE('HELLO','ELO','XYZ') FROM DUAL;
+
+TRANS
+-----
+HXYYZ
+
+SUBSTR()
+========
+- returns the required sub string from a given expression.
+
+syntax
+---------
+substr(string1,<starting position of char>,<length of char's>) 
+
+SQL> SELECT SUBSTR('WELCOME',3,2) FROM DUAL;
+
+SU
+--
+LC
+
+
+INSTR()
+======
+-return the occurance position of character in the given string expression.
+
+
+Syntax
+======
+instr(string1,string2,<starting postion of char>,<occurance postion of char>)
+
+ex:
+====
+SQL> SELECT INSTR('HELLO WELCOME','O') FROM DUAL;
+
+INSTR('HELLOWELCOME','O')
+-------------------------
+                        5
+
+SQL> SELECT INSTR('HELLO WELCOME','O',1,1) FROM DUAL;
+
+INSTR('HELLOWELCOME','O',1,1)
+-----------------------------
+                            5
+
+SQL> SELECT INSTR('HELLO WELCOME','O',1,2) FROM DUAL;
+
+INSTR('HELLOWELCOME','O',1,2)
+-----------------------------
+                           11
+SQL> SELECT INSTR('HELLO WELCOME','E',1,3) FROM DUAL;
+
+INSTR('HELLOWELCOME','E',1,3)
+-----------------------------
+                           13
+
+SQL> SELECT INSTR('HELLO WELCOME','E',1,4) FROM DUAL;
+
+INSTR('HELLOWELCOME','E',1,4)
+-----------------------------
+                            0
+
+SQL> SELECT INSTR('HELLO WELCOME','E',-1,3) FROM DUAL;
+
+INSTR('HELLOWELCOME','E',-1,3)
+------------------------------
+                             2
+=postion of char's in the string expression is always fixed either count from
+left to right or right to left.
+
+DATE FUNCTIONS
+===========
+SYSDATE:
+--------
+-Return the current date information of the system.
+SQL> SELECT SYSDATE FROM DUAL;
+
+SYSDATE
+---------
+18-JAN-26
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
