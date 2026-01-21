@@ -1,0 +1,9 @@
+github.com/dilipsundarraj/java-installation
+https://github.com/dilipsundarraj1/java-installation
+
+java8
+=====
+Functional Programming
+Imperative programming languages
+Declarative programming
+#Fuctional programming uses the concept of declarative programming.

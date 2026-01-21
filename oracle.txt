@@ -1613,6 +1613,438 @@ SYSDATE
 18-JAN-26
 
 
+ADD_MONTHS()
+===========
+-add no of months to the given date expression.
+
+syntax
+=======
+add_months(date1,<no. of months>)
+
+SQL> SELECT ADD_MONTHS(SYSDATE,3) FROM DUAL;
+
+ADD_MONTHS(SYSDATE,3)       
+
+SQL> SELECT ADD_MONTHS(SYSDATE,5) FROM DUAL;
+
+ADD_MONTH
+---------
+20-JUN-26
+
+SQL> SELECT ADD_MONTHS(SYSDATE,-5) FROM DUAL;
+
+ADD_MONTH
+---------
+20-AUG-25
+
+LAST_DAY()
+==========
+    -return last day of the given month in date expression.
+
+
+SQL> SELECT LAST_DAY(SYSDATE) FROM DUAL;
+
+MONTHS_BETWEEN()
+------------------
+-return no.of months between the given two date expressions.
+
+syntax
+-------
+months_between(date1,date2)
+
+SQL> SELECT MONTHS_BETWEEN(SYSDATE,HIREDATE) FROM EMP;
+
+SQL> SELECT MONTHS_BETWEEN(SYSDATE,HIREDATE) FROM EMP;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPT         
+
+
+
+SQL> SELECT MONTHS_BETWEEN('07-OCT-21','07-OCT-22') FROM DUAL;
+
+MONTHS_BETWEEN('07-OCT-21','07-OCT-22')
+---------------------------------------
+                                    -12
+
+
+NOTE
+========
+-HERE DATE1 EXPRESSION IS ALWAYS GREATER THAN DATE 2 otherwise it return negative value.
+
+
+SQL> SELECT MONTHS_BETWEEN('07-OCT-22','07-OCT-21') FROM DUAL;
+
+MONTHS_BETWEEN('07-OCT-22','07-OCT-21')
+---------------------------------------
+                                     12
+
+
+CONVERSION FUNCTIONS
+======================
+
+i> to_char()
+ii> to_date()
+
+i>to_char()
+============
+to convert date type to char type and display date expression in different format.
+
+syntax
+==========
+
+to_char(date,<interval format>)
+
+
+ex:
+====
+Year format
+==========
+SQL> SELECT TO_CHAR(SYSDATE,'YYYY') FROM DUAL;
+
+ex
+======
+year format
+============
+YYYY- four digits of the year(2021)
+YY- LAST TWO digits of the year(21)
+YEAR-TWENTY TWENTY FIVE
+CC-CENTYRY
+AD/BC- AD year/ BC year
+
+SQL> SELECT TO_CHAR(SYSDATE,'YYYY') FROM DUAL;
+
+TO_CHAR(SYSDATE,'YYYY')
+-----------------------
+2021
+
+SQL> SELECT TO_CHAR(SYSDATE,'YY') FROM DUAL;
+
+TO_CHAR(SYSDATE,'YY')
+---------------------
+21                  
+
+SQL> SELECT TO_CHAR(SYSDATE,'YYYY YY YEAR CC BC' ) FROM DUAL;
+
+TO_CHAR(SYSDATE,'YYYYYYYEARCCBC')
+--------------------------------------------------------
+2026 26 TWENTY TWENTY-SIX 21 AD
+
+SQL> SELECT * FROM EMP WHERE TO_CHAR(HIREDATE,'YYYY')=1982;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7934 MILLER     CLERK           7782 23-JAN-82       1300                    10
+
+SQL> SELECT * FROM EMP WHERE TO_CHAR(HIREDATE,'YYYY')=82;
+
+no rows selected
+
+SQL> SELECT * FROM EMP WHERE TO_CHAR(HIREDATE,'YY')=1982;
+
+no rows selected
+
+SQL> SELECT * FROM EMP WHERE TO_CHAR(HIREDATE,'YY')=82;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7934 MILLER     CLERK           7782 23-JAN-82       1300                    10
+
+
+MONTH FORMAT
+============
+MM - MONTH number
+MON - FIRST THREE CHARS FROM MONTH SPELLING
+MONTH- FULL NAME OF MONTH
+
+SQL> SELECT TO_CHAR(SYSDATE,'MM') FROM DUAL;
+
+TO_CHAR(SYSDATE,'MM')
+---------------------
+01
+
+SQL> SELECT TO_CHAR(SYSDATE,'MON') FROM DUAL;
+
+TO_CHAR(SYSDATE,'MON')
+---------------------
+JAN
+
+SQL> SELECT TO_CHAR(SYSDATE,'MONTH') FROM DUAL;
+
+TO_CHAR(SYSDATE,'MONTH')
+-------------------------
+JANUARY
+
+SQL> SELECT TO_CHAR(SYSDATE,'MM MON MONTH') FROM DUAL;
+
+TO_CHAR(SYSDATE,'MMMONMONTH')
+----------------------------------------------------
+01 JAN JANUARY
+
+
+SQL> SELECT TO_CHAR(SYSDATE,'MM MON MONTH') FROM DUAL;
+
+TO_CHAR(SYSDATE,'MMMONMONTH')
+----------------------------------------------------
+01 JAN JANUARY
+
+SQL> SELECT * FROM EMP WHERE TO_CHAR(HIREDATE,'MM') IN(02,06,12);
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7782 CLARK      MANAGER         7839 09-JUN-81       2450                    10
+      7902 FORD       ANALYST         7566 03-DEC-81       3000                    20
+      7369 SMITH      CLERK           7902 17-DEC-80        800                    20
+      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600        300         30
+      7521 WARD       SALESMAN        7698 22-FEB-81       1250        500         30
+      7900 JAMES      CLERK           7698 03-DEC-81        950                    30
+
+6 rows selected.
+
+
+SQL> SELECT TO_CHAR(SYSDATE,'MM MON MONTH') FROM DUAL;
+
+TO_CHAR(SYSDATE,'MMMONMONTH')
+----------------------------------------------------
+01 JAN JANUARY
+
+
+DAY FORMAT
+=========
+DDD -  DAY OF THE YEAR
+DD  -  DAY OF THE MONTH
+D   -  DAY OF THE WEEK
+
+SUN-1
+MON-2
+TUE-3
+WED-4
+THU-5
+FRI-6
+SAT-7
+
+SQL> SELECT TO_CHAR(SYSDATE,'DDD') FROM DUAL;
+
+TO_CHAR(SYSDATE,'DD') FROM DUAL;
+
+TO_CHAR(SYSDATE,'D') FROM DUAL;
+
+TO_CHAR(SYSDATE,'DD')       
+
+
+DAY - full name of the day
+DY- FIRST 3 CHAR OF DAY SPELLING
+
+EX
+====
+SELECT TO_CHAR
+
+
+
+SQL> SELECT TO_CHAR(SYSDATE,'DDD DD D DAY DY') FROM DUAL;
+
+TO_CHAR(SYSDATE,'DDDDDDDAYDY')
+----------------------------------------------------------
+020 20 3 TUESDAY   TUE
+
+
+QUATER FORMAT
+=============
+Q- ONE DIGIT QUATER OF THE YEAR
+
+1= JAN-MAR
+2= APR-JUN
+3-JUL-SEP
+4-OCT-DEC
+
+SQL> SELECT TO_CHAR(SYSDATE,'Q') FROM DUAL;
+
+SQL> SELECT TO_CHAR(SYSDATE,'Q') FROM DUAL;
+
+T
+-
+1
+
+SQL> SELECT * FROM EMP WHERE TO_CHAR(HIREDATE,'YYYY')=1981;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7839 KING       PRESIDENT            17-NOV-81       5000                    10
+      7698 BLAKE      MANAGER         7839 01-MAY-81       2850                    30
+      7782 CLARK      MANAGER         7839 09-JUN-81       2450                    10
+      7566 JONES      MANAGER         7839 02-APR-81       2975                    20
+      7902 FORD       ANALYST         7566 03-DEC-81       3000                    20
+      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600        300         30
+      7521 WARD       SALESMAN        7698 22-FEB-81       1250        500         30
+      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250       1400         30
+      7844 TURNER     SALESMAN        7698 08-SEP-81       1500          0         30
+      7900 JAMES      CLERK           7698 03-DEC-81        950                    30
+
+10 rows selected.
+
+SQL> SELECT * FROM EMP WHERE TO_CHAR(HIREDATE,'YYYY')=1981 AND TO_CHAR(HIREDATE,'Q')=2;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7698 BLAKE      MANAGER         7839 01-MAY-81       2850                    30
+      7782 CLARK      MANAGER         7839 09-JUN-81       2450                    10
+      7566 JONES      MANAGER         7839 02-APR-81       2975                    20
+
+WEEK FORMAT
+============
+WW - WEEK IN THE YEAR
+W - WEEK IN THE MONTH
+
+SQL> SELECT TO_CHAR(SYSDATE,'WW W') FROM DUAL;
+
+TO_C
+----
+03 3
+
+TIME FORMAT
+================
+HH24 - 24HR FORMAT
+HH12 - 12HR FORMAT
+MI - MINUTE
+SS- SECONDS
+
+
+SQL> SELECT TO_CHAR(SYSDATE,'HH24 HH12 MI SS AM') FROM DUAL;
+
+TO_CHAR(SYSDAT
+--------------
+07 07 40 45 AM
+
+TO_DATE()
+==========
+-to convert char type to oracle default date format(dd-mon-yy)
+
+to_date(string)
+
+ex
+==
+SELECT TO_DATE('08/AUGUST/2020') FROM DUAL;
+
+
+MULTIPLE ROW FUNCTIONS
+=======================
+-return either single value or group of values and return a single value.
+-is also called as "grouping functions"
+
+sum()
+=======
+return sum of values
+
+AVG()
+======
+-return average of employee
+
+SQL> SELECT SUM(SAL) FROM EMP;
+
+  SUM(SAL)
+----------
+     29025
+
+SQL> SELECT * FROM EMP WHERE JOB='ANALYST';
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7788 SCOTT      ANALYST         7566 19-APR-87       3000                    20
+      7902 FORD       ANALYST         7566 03-DEC-81       3000                    20
+
+SQL> SELECT SUM(SAL) FROM EMP WHERE JOB='ANALYST';
+
+  SUM(SAL)
+----------
+      6000
+
+SQL> SELECT AVG(SAL) FROM EMP;
+
+  AVG(SAL)
+----------
+2073.21429
+
+SQL> SELECT * FROM EMP WHERE DEPTNO=10;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7839 KING       PRESIDENT            17-NOV-81       5000                    10
+      7782 CLARK      MANAGER         7839 09-JUN-81       2450                    10
+      7934 MILLER     CLERK           7782 23-JAN-82       1300                    10
+
+SQL> SELECT SUM(SAL) FROM EMP WHERE DEPTNO=10;
+
+  SUM(SAL)
+----------
+
+
+
+SQL> SELECT AVG(SAL) FROM EMP WHERE DEPTNO=10;
+
+  AVG(SAL)
+----------
+2916.66667
+
+2>AVG()
+3>MIN()
+========
+-return minimum value
+
+MAX()
+=====
+it returns maximum value
+
+
+COUNT(*)
+return all rows values including null and duplicates
+
+SQL> SELECT * FROM TEST;
+
+       SNO NAME
+---------- ----------
+       101 AA
+       102 BB
+       103 CC
+       104
+       105 AA
+       106 CC
+
+6 rows selected.
+
+SQL> select count(*) from test
+  2  ;
+
+  COUNT(*)
+----------
+         6
+COUNT(<COLUMN NAME>)
+
+counting all values in a column except nulls;
+
+SQL> select count(NAME) from test;
+
+COUNT(NAME)
+-----------
+          5
+COUNT(DISTINCT<COULMN NAME>)
+--------------------------------------
+-counting unique values in a column.
+
+SQL> SELECT COUNT(DISTINCT NAME) FROM TEST;
+
+COUNT(DISTINCTNAME)
+-------------------
+                  3
+
+
+
+
+
+
+
+
+
+
+
 
 
 
