@@ -2033,7 +2033,300 @@ SQL> SELECT COUNT(DISTINCT NAME) FROM TEST;
 
 COUNT(DISTINCTNAME)
 -------------------
-                  3
+                  
+                  ==22==========
+
+    
+CLAUSES
+=========
+-it is a statement which is used to add to sql query for providing the additional facilities are
+"filtering rows,Sorting values,grouping similar data,Finding sub total and grand total" based on
+columns autimatically.
+
+
+syntax
+=========
+<SQL Query> +<Clause statement>
+
+-where-Order by
+-Group by
+-having
+-RollUp
+-Cube
+
+ex-WAQ TO rerive employee details whose empno is 7788?
+sol:
+select * from emp;-------------without where clause condition.
+select * from emp + where empno=7788;
+    ||                  ||
+
+    sql squery          clauses
+
+
+
+where
+=========
+-filtering rows one-by-one manner before grouping data in a table.
+-can be used in "SELECT,UPDATE,DELETE" command only.
+
+
+
+syntax
+=========
+        where <filtering condition>
+
+ex:
+select * from emp where empno=7788;
+update emp set sal=4400 where jpb='clerk';
+delete from emp where dept=10;
+
+Order by
+==============
+    -sorting values of a column(ascending/descending )
+    -by default order by clause arrange values in ascending order only.
+     but if we want to arrange values in descending order ------->"desc" keyword.
+
+     -Desc<table name> ----------->Desc = Describe
+     -Desc<column name>------------->Desc = Descending
+    -it can be used only "SELECT" command only.
+
+
+syntax
+============
+select * from <table name> order by <column name1><asc|desc>,<column name2><asc|desc>..............................;
+
+
+SQL> SELECT * FROM EMP ORDER BY SAL;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7369 SMITH      CLERK           7902 17-DEC-80        800                    20
+      7900 JAMES      CLERK           7698 03-DEC-81        950                    30
+      7876 ADAMS      CLERK           7788 23-MAY-87       1100                    20
+      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250       1400         30
+      7521 WARD       SALESMAN        7698 22-FEB-81       1250        500         30
+      7934 MILLER     CLERK           7782 23-JAN-82       1300                    10
+      7844 TURNER     SALESMAN        7698 08-SEP-81       1500          0         30
+      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600        300         30
+      7782 CLARK      MANAGER         7839 09-JUN-81       2450                    10
+      7698 BLAKE      MANAGER         7839 01-MAY-81       2850                    30
+      7566 JONES      MANAGER         7839 02-APR-81       2975                    20
+      7902 FORD       ANALYST         7566 03-DEC-81       3000                    20
+      7788 SCOTT      ANALYST         7566 19-APR-87       3000                    20
+      7839 KING       PRESIDENT            17-NOV-81       5000                    10
+
+SQL> SELECT HIREDATE FROM EMP ORDER BY HIREDATE DESC;
+
+SQL> SELECT HIREDATE FROM EMP ORDER BY HIREDATE DESC;
+
+
+ex
+=====
+waq to display list of employee who are working under dept=20 and arrange those employee salaries in descending order?
+
+SELECT * FROM EMP WHERE DEPTNO=20 ORDER BY SAL DESC;
+
+
+waq to arrange employee dept nos in ascending no and and those employee salaries in descending order for each dept no wise?
+
+SQL> SELECT * FROM EMP ORDER BY DEPTNO,SAL DESC;
+
+Note
+======
+    - using orderby clause on not only column names even though we can apply order by clause on position of column in select query.
+
+    SQL> SELECT * FROM EMP ORDER BY 6;
+SQL> SELECT EMPNO,ENAME FROM EMP ORDER BY 1 DESC;
+
+Order by with Null clauses
+=============================
+    i>nulls first
+    ii>nulls last
+
+  SQL> SELECT * FROM EMP ORDER BY COMM NULLS FIRST;
+
+       EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+  ---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+        7839 KING       PRESIDENT            17-NOV-81       5000                    10
+        7698 BLAKE      MANAGER         7839 01-MAY-81       2850                    30
+        7782 CLARK      MANAGER         7839 09-JUN-81       2450                    10
+        7566 JONES      MANAGER         7839 02-APR-81       2975                    20
+        7788 SCOTT      ANALYST         7566 19-APR-87       3000                    20
+        7902 FORD       ANALYST         7566 03-DEC-81       3000                    20
+        7934 MILLER     CLERK           7782 23-JAN-82       1300                    10
+        7369 SMITH      CLERK           7902 17-DEC-80        800                    20
+        7900 JAMES      CLERK           7698 03-DEC-81        950                    30
+        7876 ADAMS      CLERK           7788 23-MAY-87       1100                    20
+        7844 TURNER     SALESMAN        7698 08-SEP-81       1500          0         30
+        7499 ALLEN      SALESMAN        7698 20-FEB-81       1600        300         30
+        7521 WARD       SALESMAN        7698 22-FEB-81       1250        500         30
+        7654 MARTIN     SALESMAN        7698 28-SEP-81       1250       1400         30
+
+  14 rows selected.
+
+
+  SQL> SELECT * FROM EMP ORDER BY COMM DESC NULLS LAST;
+
+       EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+  ---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+        7654 MARTIN     SALESMAN        7698 28-SEP-81       1250       1400         30
+        7521 WARD       SALESMAN        7698 22-FEB-81       1250        500         30
+        7499 ALLEN      SALESMAN        7698 20-FEB-81       1600        300         30
+        7844 TURNER     SALESMAN        7698 08-SEP-81       1500          0         30
+        7788 SCOTT      ANALYST         7566 19-APR-87       3000                    20
+        7902 FORD       ANALYST         7566 03-DEC-81       3000                    20
+        7934 MILLER     CLERK           7782 23-JAN-82       1300                    10
+        7876 ADAMS      CLERK           7788 23-MAY-87       1100                    20
+        7900 JAMES      CLERK           7698 03-DEC-81        950                    30
+        7566 JONES      MANAGER         7839 02-APR-81       2975                    20
+        7782 CLARK      MANAGER         7839 09-JUN-81       2450                    10
+        7698 BLAKE      MANAGER         7839 01-MAY-81       2850                    30
+        7839 KING       PRESIDENT            17-NOV-81       5000                    10
+        7369 SMITH      CLERK           7902 17-DEC-80        800                    20
+
+  14 rows selected.
+
+
+NOTE : these are optional.
+
+Group by:
+============
+    - grouping similar data based on columns.
+    -when we use group by clause we should use "grouping functions" are "count(),sum(),avg(),min(),max()";
+    -use in "select command only".
+
+
+ syntax
+ ========
+ select <column name1>,<column name2>,.......<grouping function name1>,...... from
+ <table name> group by (<column name1>,<column name2>,..........);
+
+ Ex:
+ ====
+ waq to find out no.of employee working in each dept wise ?
+
+ SQL> SELECT DEPTNO,COUNT(*) FROM EMP GROUP BY DEPTNO;
+
+     DEPTNO   COUNT(*)
+ ---------- ----------
+         30          6
+         10          3
+         20          5
+
+   SQL> SELECT DEPTNO,COUNT(*) FROM EMP GROUP BY DEPTNO ORDER BY DEPTNO;
+
+       DEPTNO   COUNT(*)
+   ---------- ----------
+           10          3
+           20          5
+           30          6
+
+    EX
+    ===
+    waq to display sum of salaries of each job wise ?
+
+    SQL> SELECT JOB,SUM(SAL) FROM EMP GROUP BY JOB;
+
+    JOB         SUM(SAL)
+    --------- ----------
+    ANALYST         6000
+    CLERK           4150
+    SALESMAN        5600
+    MANAGER         8275
+    PRESIDENT       5000
+
+
+SQL> SELECT DEPTNO,COUNT(*) NO_OF_EMP,SUM(SAL) TOTAL_SAL,AVG(SAL) AVG_SAL,MIN(SAL) MIN_SAL,MAX(SAL) MAX_SAL FROM EMP GROUP BY DEPTNO;
+
+    DEPTNO  NO_OF_EMP  TOTAL_SAL    AVG_SAL    MIN_SAL    MAX_SAL
+---------- ---------- ---------- ---------- ---------- ----------
+        30          6       9400 1566.66667        950       2850
+        10          3       8750 2916.66667       1300       5000
+        20          5      10875       2175        800       3000
+
+
+  HAVING
+  ==========
+  -to filtering rows after grouping data in table
+  -this clause can be used along with group by clause.
+
+
+syntax
+=======
+ select <column name1>,<column name2>,.......<grouping function name1>,...... from
+ <table name> group by (<column name1>,<column name2>,..........) having <filtering vondition>
+
+
+waq to display deptno's in which deptno no of employee is more than 3 ?
+
+SELECT DEPTNO,COUNT(*) FROM EMP GROUP BY DEPTNO ORDER BY DEPTNO;
+
+
+SQL> SELECT DEPTNO,COUNT(*) FROM EMP GROUP BY DEPTNO HAVING COUNT(*)>3;
+
+    DEPTNO   COUNT(*)
+---------- ----------
+        30          6
+        20          5
+
+SQL> SELECT DEPTNO,COUNT(*) FROM EMP GROUP BY DEPTNO HAVING COUNT(*)>3 ORDER BY DEPTNO;
+
+    DEPTNO   COUNT(*)
+---------- ----------
+        20          5
+        30          6
+
+
+  WAQ TO DISPLAY JOBS in which job sum of salary less than 5000 ?
+
+  SQL> SELECT JOB,SUM(SAL) FROM EMP GROUP BY JOB HAVING SUM(SAL)<5000;
+
+  JOB         SUM(SAL)
+  --------- ----------
+  CLERK           4150
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

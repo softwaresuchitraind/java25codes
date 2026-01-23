@@ -13,3 +13,8 @@ https://github.com/navinreddy20/spring6-course.git
 https://github.com/navinreddy20/MicroserviceTutorials.git
 
 
+Functional Interfaces in java8
+=======================================
+Consumer----------Biconsumer
+Predicate-----------Bipredicate
+Function------------BiFunction,UnaryOperator,BinaryOperator

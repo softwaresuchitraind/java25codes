@@ -7,3 +7,8 @@ Functional Programming
 Imperative programming languages
 Declarative programming
 #Fuctional programming uses the concept of declarative programming.
+
+Lamda Expressions
+==================
+#Lamda is equivalent to a function(method) without a name.
+#Lamda's are also referred as Anonymous functions.
