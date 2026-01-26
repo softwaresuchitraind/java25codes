@@ -2286,6 +2286,1000 @@ SQL> SELECT DEPTNO,COUNT(*) FROM EMP GROUP BY DEPTNO HAVING COUNT(*)>3 ORDER BY 
   CLERK           4150
 
 
+All classes in a single select query:
+=====================================
+syntax:
+=========
+select<column name>,......<grouping function name>,...... from <table name>
+[where<filtering condition>
+group by<coloumn name>
+having<filtering condition>
+order by<column name><asc|desc>
+]
+SQL> SELECT DEPTNO,COUNT(*) FROM EMP
+  2  WHERE SAL>1000
+  3  GROUP BY DEPTNO
+  4  HAVING COUNT(*)>3
+  5  ORDER BY DEPTNO;
+
+    DEPTNO   COUNT(*)
+---------- ----------
+        20          4
+        30          5
+
+
+ Order of execution
+ ===================
+ -FROM
+ -WHERE
+ -GROUP BY
+ -HAVING
+ -SELECT
+ -ORDER BY
+
+
+ ROLLUP & CUBE
+ ==================
+ -are sepecial clauses
+ -to finding sub total and grand total based on columns
+ -are implementing along with "group by"
+        -Rollup: to find sub total & grand total based on a single columns.
+        -Cube : to find sub total & grand total based on multiple columns.
+
+ syntax for Rollup
+ =================
+
+
+select<column name>,......<grouping function name>,...... from <table name>
+[where<filtering condition>
+group by rollup<coloumn name1>,<column name2>,............);
+                    ||                      ||
+                operational column      supporting column
+                to find sub & grand
+                total
+
+ rollup with single Column
+ =========================
+ SQL> SELECT DEPTNO,COUNT(*) FROM EMP
+   2  GROUP BY ROLLUP(DEPTNO)
+   3  ;
+
+     DEPTNO   COUNT(*)
+ ---------- ----------
+         10          3
+         20          5
+         30          6
+                    14
+
+ ROLLUP WITH MULTIPLE COLUMNS
+ =======================================
+ SQL> SELECT JOB,DEPTNO,COUNT(*) FROM EMP GROUP BY ROLLUP(JOB,DEPTNO);
+
+ JOB           DEPTNO   COUNT(*)
+ --------- ---------- ----------
+ CLERK             10          1
+ CLERK             20          2
+ CLERK             30          1
+ CLERK                         4
+ ANALYST           20          2
+ ANALYST                       2
+ MANAGER           10          1
+ MANAGER           20          1
+ MANAGER           30          1
+ MANAGER                       3
+ SALESMAN          30          4
+ SALESMAN                      4
+ PRESIDENT         10          1
+ PRESIDENT                     1
+                              14
+
+ 15 rows selected.
+
+
+
+ syntax for CUBE
+ =================
+
+
+select<column name>,......<grouping function name>,...... from <table name>
+[where<filtering condition>
+group by cube<coloumn name1>,<column name2>,............);
+             ==========================================
+                        ||
+                all columns are operational column
+                to find sub & grand
+                total
+
+
+  GROUPING_ID()
+  ================
+  -to give id numbers to sub total rows & grand total row in result set.
+
+        id number 1 : first sub total row
+        id number 2 : second subtotal row
+        id number 3 : grand row
+
+
+JOINS
+=========
+-are used to retrieve data from multiple tables at a time.
+-joins can be use in two ways,
+
+1. Non-ansi format joins(oracle 8i joins)
+===========================================
+    -Equi join
+    -Non Equi join
+    -Self join
+
+
+2.Ansi format joins(oracle 9i joins)
+===================================
+    -Inner join
+    -Outer join
+            -left outer
+            -right outer
+            -full outer
+     -cross join/cartesian join
+     -Natural join
+
+
+
+Note
+========
+1.when we retrieve data from multiple tables based on "where" clause condition
+then we called as "Non-ansi joins".
+
+2.when we retrieve data from multiple tables with "ON" clause condition
+  then we called as "Non-ansi joins".
+
+3.Non-ansi joins are not a portablity where as Ansi joins are portability where portablity measns we can move join statement from one database
+to other database without any changes as it is we can move it.
+
+syntax for non-ani joins
+===========================
+select * from <table name1>,<table name2> where <joining condition>
+
+syntax for ANSI joins
+=====================
+select * from <table name1> <join key> <table name2> on <joining condition>
+
+
+Equi join
+============
+        -when we retrieve data from multiple tables based on an "=" operator.
+        -we have at least a single common column(optional) in both tables.
+
+        test1   test2   test3   test4
+        ===      ====   ====    ====
+
+        -is always retreve matching rows/data from multiple tables.
+        -when we joins on tables is it need to have relationship between tables ?
+            ans-optional[yes|no][may be | maynot be]
+
+syntax
+=======
+    where <table name1><common column>= <table name2>.<common column>
+
+    or
+
+    where<table name1 alias name>.<column name>=<table name2 alias name>.<column name>
+
+SQL> SELECT * FROM STUDENT;
+
+      STID SNAME             CID
+---------- ---------- ----------
+      1021 SMITH              10
+      1022 ALLEN              20
+      1023 MILLER             30
+
+SQL> SELECT * FROM COURSE;
+
+       CID CNAME            CFEE
+---------- ---------- ----------
+        10 C                1000
+        20 ORACLE           2500
+        40 JAVA             5000
+
+waq to retrieve student and their course details from student,course tables by using equi join ?
+=================================================================================================
+SQL> SELECT * FROM STUDENT,COURSE WHERE STUDENT.CID=COURSE.CID;
+
+      STID SNAME             CID        CID CNAME            CFEE
+---------- ---------- ---------- ---------- ---------- ----------
+      1021 SMITH              10         10 C                1000
+      1022 ALLEN              20         20 ORACLE           2500
+SQL> SELECT * FROM STUDENT S,COURSE C WHERE S.CID=C.CID;
+
+      STID SNAME             CID        CID CNAME            CFEE
+---------- ---------- ---------- ---------- ---------- ----------
+      1021 SMITH              10         10 C                1000
+      1022 ALLEN              20         20 ORACLE           2500
+
+Rule of joins
+=============
+    -a row in a table is comparing with all rows in another table.
+
+ waq to retrieve student ,course details from tables by using equi join if course id is 20 ?
+
+===============================================================================================
+SQL> SELECT * FROM STUDENT S,COURSE C WHERE S.CID=C.CID AND S.CID=20;
+
+      STID SNAME             CID        CID CNAME            CFEE
+---------- ---------- ---------- ---------- ---------- ----------
+      1022 ALLEN              20         20 ORACLE           2500
+
+SQL> SELECT * FROM STUDENT S,COURSE C WHERE S.CID=C.CID AND C.CID=20;
+
+      STID SNAME             CID        CID CNAME            CFEE
+---------- ---------- ---------- ---------- ---------- ----------
+      1022 ALLEN              20         20 ORACLE           2500
+
+
+
+waq to display employee from emp,dept tables who are working in the location "chicago"?
+=======================================================================================
+SQL> SELECT * FROM EMP E,DEPT D WHERE E.DEPTNO=D.DEPTNO AND LOC='CHICAGO';
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO     DEPTNO DNAME          LOC
+---------- ---------- --------- ---------- --------- ---------- ---------- ---------- ---------- -------------- -------------
+      7521 WARD       SALESMAN        7698 22-FEB-81       1250        500         30         30 SALES          CHICAGO
+      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250       1400         30         30 SALES          CHICAGO
+      7844 TURNER     SALESMAN        7698 08-SEP-81       1500          0         30         30 SALES          CHICAGO
+      7900 JAMES      CLERK           7698 03-DEC-81        950                    30         30 SALES          CHICAGO
+      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600        300         30         30 SALES          CHICAGO
+      7698 BLAKE      MANAGER         7839 01-MAY-81       2850                    30         30 SALES          CHICAGO
+
+6 rows selected.
+
+
+Inner join
+==========
+-is similar to equi join.
+-it is ANSI format.
+
+waq to retrieve student and their course details from student,course tables by using inner join ?
+
+
+SQL> SELECT * FROM STUDENT S INNER JOIN COURSE C ON S.CID=C.CID;
+
+      STID SNAME             CID        CID CNAME            CFEE
+---------- ---------- ---------- ---------- ---------- ----------
+      1021 SMITH              10         10 C                1000
+      1022 ALLEN              20         20 ORACLE           2500
+
+
+
+SQL> SELECT * FROM EMP E INNER JOIN DEPT D ON E.DEPTNO=D.DEPTNO AND LOC='CHICAGO';
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO     DEPTNO DNAME          LOC
+---------- ---------- --------- ---------- --------- ---------- ---------- ---------- ---------- -------------- -------------
+      7521 WARD       SALESMAN        7698 22-FEB-81       1250        500         30         30 SALES          CHICAGO
+      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250       1400         30         30 SALES          CHICAGO
+      7844 TURNER     SALESMAN        7698 08-SEP-81       1500          0         30         30 SALES          CHICAGO
+      7900 JAMES      CLERK           7698 03-DEC-81        950                    30         30 SALES          CHICAGO
+      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600        300         30         30 SALES          CHICAGO
+      7698 BLAKE      MANAGER         7839 01-MAY-81       2850                    30         30 SALES          CHICAGO
+
+NOTE:
+=========
+    -equi/inner join retrieving only matching data from tables.
+
+OUTER JOINS
+============
+    I)left outer join
+    =====================
+            -retrieving matching data from both tables and unmatching data from left side only.
+
+
+       ex:
+       ANSI
+       ======
+       SQL> SELECT * FROM STUDENT S LEFT OUTER JOIN COURSE C ON S.CID=C.CID;
+
+             STID SNAME             CID        CID CNAME            CFEE
+       ---------- ---------- ---------- ---------- ---------- ----------
+             1021 SMITH              10         10 C                1000
+             1022 ALLEN              20         20 ORACLE           2500
+             1023 MILLER             30
+
+       NON-ANSI
+       ========
+            -when we write outer join statements in non-ansi format then we should use a join operator is called as (+)
+            operator as(+)
+            SQL> SELECT * FROM STUDENT S,COURSE C WHERE S.CID=C.CID(+);
+
+                  STID SNAME             CID        CID CNAME            CFEE
+            ---------- ---------- ---------- ---------- ---------- ----------
+                  1021 SMITH              10         10 C                1000
+                  1022 ALLEN              20         20 ORACLE           2500
+                  1023 MILLER             30
+
+    ii)right outer join
+    =======================
+            -retrieving matching data from both the tables and unmatching data from RIGHT side table only.
+
+            ANSI:
+            SQL> SELECT * FROM STUDENT S RIGHT OUTER JOIN COURSE C ON S.CID=C.CID;
+
+                  STID SNAME             CID        CID CNAME            CFEE
+            ---------- ---------- ---------- ---------- ---------- ----------
+                  1021 SMITH              10         10 C                1000
+                  1022 ALLEN              20         20 ORACLE           2500
+                                                     40 JAVA             5000
+            NON ANSI:
+
+SQL> SELECT * FROM STUDENT S,COURSE C WHERE S.CID(+)=C.CID;
+
+      STID SNAME             CID        CID CNAME            CFEE
+---------- ---------- ---------- ---------- ---------- ----------
+      1021 SMITH              10         10 C                1000
+      1022 ALLEN              20         20 ORACLE           2500
+                                         40 JAVA             5000
+
+    iii)full outer join
+    =====================
+        -retrieving matching & also unmatching data from both tables.
+        -is a combination of left outer and right outer.
+
+       ANSI
+       =======
+        SQL> SELECT * FROM STUDENT S FULL OUTER JOIN COURSE C ON S.CID=C.CID;
+
+              STID SNAME             CID        CID CNAME            CFEE
+        ---------- ---------- ---------- ---------- ---------- ----------
+              1021 SMITH              10         10 C                1000
+              1022 ALLEN              20         20 ORACLE           2500
+              1023 MILLER             30
+                                                 40 JAVA             5000
+
+       NON-ANSI
+       =======
+
+        SQL> SELECT * FROM STUDENT S,COURSE C WHERE S.CID=C.CID(+)
+          2  UNION
+          3  SELECT * FROM STUDENT S,COURSE C WHERE S.CID(+)=C.CID;
+
+              STID SNAME             CID        CID CNAME            CFEE
+        ---------- ---------- ---------- ---------- ---------- ----------
+              1021 SMITH              10         10 C                1000
+              1022 ALLEN              20         20 ORACLE           2500
+              1023 MILLER             30
+                                                 40 JAVA             5000
+
+        NON-EQUI JOIN:
+        ================
+            -retrieving data from multiple tables based on any condition except an "=" operator condition.
+            -can use the following operators "<,>,<=,>=,!=,and,or,between,..............etc"
+
+
+     ex
+     ==
+     SQL> SELECT * FROM TEST1;
+
+            SNO NAME
+     ---------- ----------
+             10 SAI
+             20 ADAM
+
+     SQL> SELECT * FROM TEST2;
+
+            SNO        SAL
+     ---------- ----------
+             10      15000
+             30      25000
+     SQL> SELECT * FROM TEST1 T1,TEST2 T2 WHERE T1.SNO >T2.SNO;
+
+            SNO NAME              SNO        SAL
+     ---------- ---------- ---------- ----------
+             20 ADAM               10      15000
+
+
+ex
+====
+waq to display employee whose salary is between low salary and high salary ?
+SQL> SELECT ENAME,SAL,LOSAL,HISAL FROM EMP,SALGRADE WHERE SAL BETWEEN LOSAL AND HISAL;
+
+ENAME             SAL      LOSAL      HISAL
+---------- ---------- ---------- ----------
+SMITH             800        700       1200
+JAMES             950        700       1200
+ADAMS            1100        700       1200
+MARTIN           1250       1201       1400
+WARD             1250       1201       1400
+MILLER           1300       1201       1400
+TURNER           1500       1401       2000
+ALLEN            1600       1401       2000
+CLARK            2450       2001       3000
+BLAKE            2850       2001       3000
+JONES            2975       2001       3000
+FORD             3000       2001       3000
+SCOTT            3000       2001       3000
+KING             5000       3001       9999
+
+14 rows selected.
+
+SQL> SELECT ENAME,SAL,LOSAL,HISAL FROM EMP,SALGRADE WHERE (SAL>=LOSAL) AND (SAL<=HISAL);
+
+ENAME             SAL      LOSAL      HISAL
+---------- ---------- ---------- ----------
+SMITH             800        700       1200
+JAMES             950        700       1200
+ADAMS            1100        700       1200
+
+ANSI FORMAT
+===========
+
+SQL> SELECT ENAME,SAL,LOSAL,HISAL FROM EMP JOIN SALGRADE ON SAL BETWEEN LOSAL AND HISAL;
+
+ENAME             SAL      LOSAL      HISAL
+---------- ---------- ---------- ----------
+SMITH             800        700       1200
+JAMES             950        700       1200
+ADAMS            1100        700       1200
+MARTIN           1250       1201       1400
+WARD             1250       1201       1400
+MILLER           1300       1201       1400
+TURNER           1500       1401       2000
+ALLEN            1600       1401       2000
+CLARK            2450       2001       3000
+BLAKE            2850       2001       3000
+JONES            2975       2001       3000
+FORD             3000       2001       3000
+SCOTT            3000       2001       3000
+KING             5000       3001       9999
+
+14 rows selected.
+
+
+SQL> SELECT ENAME,SAL,LOSAL,HISAL FROM EMP JOIN SALGRADE ON (SAL>=LOSAL) AND (SAL<=HISAL);
+
+ENAME             SAL      LOSAL      HISAL
+---------- ---------- ---------- ----------
+SMITH             800        700       1200
+JAMES             950        700       1200
+ADAMS            1100        700       1200
+MARTIN           1250       1201       1400
+WARD             1250       1201       1400
+MILLER           1300       1201       1400
+TURNER           1500       1401       2000
+ALLEN            1600       1401       2000
+CLARK            2450       2001       3000
+BLAKE            2850       2001       3000
+JONES            2975       2001       3000
+FORD             3000       2001       3000
+SCOTT            3000       2001       3000
+KING             5000       3001       9999
+
+14 rows selected.
+
+CROSS JOIN | CARTISEAN JOIN
+==============================
+-joining tables without any condition
+-each row in a 1st table(3 rows) will joins with each row of 2nd table(4 rows).
+cross join = 3 * 4 = 12 rows
+
+ansi
+
+ANSI
+========
+SQL> SELECT * FROM STUDENT CROSS JOIN COURSE;
+
+      STID SNAME             CID        CID CNAME            CFEE
+---------- ---------- ---------- ---------- ---------- ----------
+      1021 SMITH              10         10 C                1000
+      1022 ALLEN              20         10 C                1000
+      1023 MILLER             30         10 C                1000
+      1021 SMITH              10         20 ORACLE           2500
+      1022 ALLEN              20         20 ORACLE           2500
+      1023 MILLER             30         20 ORACLE           2500
+      1021 SMITH              10         40 JAVA             5000
+      1022 ALLEN              20         40 JAVA             5000
+      1023 MILLER             30         40 JAVA             5000
+
+9 rows selected.
+
+NON ANSI
+=========
+
+SQL> SELECT * FROM STUDENT,COURSE;
+
+      STID SNAME             CID        CID CNAME            CFEE
+---------- ---------- ---------- ---------- ---------- ----------
+      1021 SMITH              10         10 C                1000
+      1022 ALLEN              20         10 C                1000
+      1023 MILLER             30         10 C                1000
+      1021 SMITH              10         20 ORACLE           2500
+      1022 ALLEN              20         20 ORACLE           2500
+      1023 MILLER             30         20 ORACLE           2500
+      1021 SMITH              10         40 JAVA             5000
+      1022 ALLEN              20         40 JAVA             5000
+      1023 MILLER             30         40 JAVA             5000
+
+9 rows selected.
+
+
+
+SQL> SELECT * FROM COLORS CROSS JOIN SIZES;
+
+NAME       SIZES
+---------- ----------
+RED        SMALL
+RED        MEDIUM
+RED        LARGE
+BLUE       SMALL
+BLUE       MEDIUM
+BLUE       LARGE
+
+6 rows selected.
+
+SQL> SELECT * FROM ITEM1;
+
+       SNO INAME           PRICE
+---------- ---------- ----------
+         1 PIZZA             180
+         2 BURGER            180
+
+SQL> SELECT * FROM ITEM2;
+
+       SNO INAME           PRICE
+---------- ---------- ----------
+       101 PEPSI              25
+       102 COCACOLA           20
+
+SQL> SELECT I1.INAME,I1.PRICE,I2.INAME,I2.PRICE I1.PRICE+I2.PRICE TOTAL_BILL_AMOUT FROM ITEM1 I1 CROSS JOIN ITEM2 I2;
+SELECT I1.INAME,I1.PRICE,I2.INAME,I2.PRICE I1.PRICE+I2.PRICE TOTAL_BILL_AMOUT FROM ITEM1 I1 CROSS JOIN ITEM2 I2
+                                             *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected
+
+
+SQL> SELECT I1.INAME,I1.PRICE,I2.INAME,I2.PRICE,I1.PRICE+I2.PRICE TOTAL_BILL_AMOUT FROM ITEM1 I1 CROSS JOIN ITEM2 I2;
+
+INAME           PRICE INAME           PRICE TOTAL_BILL_AMOUT
+---------- ---------- ---------- ---------- ----------------
+PIZZA             180 PEPSI              25              205
+PIZZA             180 COCACOLA           20              200
+BURGER            180 PEPSI              25              205
+BURGER            180 COCACOLA           20              200
+
+NATURAL JOIN
+=============
+-is similar to equi join.
+-we must have a common column(mandatory) & datatype is same.
+-user defined join condition is not needed.
+-system is created a join condition based on an "=" operator along with common column name by default.
+-to eliminate duplicate column names in result set.
+
+SQL> SELECT * FROM STUDENT S NATURAL JOIN COURSE C;
+
+       CID       STID SNAME      CNAME            CFEE
+---------- ---------- ---------- ---------- ----------
+        10       1021 SMITH      C                1000
+        20       1022 ALLEN      ORACLE           2500
+
+SELF JOIN
+===========
+-is working on single table
+-joining a table by itself is called as "self join".
+-when we implement self join mechanism we must be create alias name on table otherwise we can not implement self join.
+-we can create any no of alias names on a table but each alias name should be different.
+
+ex
+===
+ emp e1,emp e2, emp e3,emp e3 ,......
+
+ -once we create alias names on a table internally system is creating virtual table on each alias name.
+
+
+ex
+===
+ emp e1,emp e2, emp e3,emp e4 ,......
+
+
+-there are two classes we can use self join mechanism,
+
+Case-1 : comparing a single column values by itself with in the same table.
+Case-2 : comparing two different columns values to each other with in the same table.
+
+
+
+
+Case-1 : comparing a single column values by itself with in the same table.
+================================================================================
+
+ex
+===
+waq to display employees who are working in the same location the employee "smith" is also working?
+
+SQL> SELECT T1.ENAME,T1.LOC FROM TEST T1, TEST T2 WHERE T1.LOC=T2.LOC AND T2.ENAME='SMITH';
+
+ENAME      LOC
+---------- ----------
+SMITH      HYD
+WARD       HYD
+
+
+WAQ TO DISPLAY EMPLOYEE whose employee salary is same as the employee ford salary?
+
+SQL> SELECT E1.ENAME,E1.SAL FROM EMP E1, EMP E2 WHERE E1.SAL=E2.SAL AND E2.ENAME='FORD';
+
+ENAME             SAL
+---------- ----------
+SCOTT            3000
+FORD             3000
+
+
+Case-2 : comparing two different columns values to each other with in the same table.
+
+EX- waq to display managers and their employees from emp?
+SQL> SELECT M.ENAME MANAGER,E.ENAME EMPLOYEES FROM EMP E, EMP M WHERE M.EMPNO=E.MGR;
+
+MANAGER    EMPLOYEES
+---------- ----------
+JONES      FORD
+JONES      SCOTT
+BLAKE      ALLEN
+BLAKE      JAMES
+BLAKE      TURNER
+BLAKE      MARTIN
+BLAKE      WARD
+CLARK      MILLER
+SCOTT      ADAMS
+KING       BLAKE
+KING       CLARK
+KING       JONES
+FORD       SMITH
+
+13 rows selected.
+
+waq to display employee who joined before their manager ?
+========================================================
+
+
+SQL> SELECT E.ENAME EMPLOYEE,E.HIREDATE EDOJ,M.ENAME MANAGER,M.HIREDATE FROM EMP E,EMP M WHERE M.EMPNO=E.MGR AND E.HIREDATE<M.HIREDATE;
+
+EMPLOYEE   EDOJ      MANAGER    HIREDATE
+---------- --------- ---------- ---------
+ALLEN      20-FEB-81 BLAKE      01-MAY-81
+WARD       22-FEB-81 BLAKE      01-MAY-81
+BLAKE      01-MAY-81 KING       17-NOV-81
+CLARK      09-JUN-81 KING       17-NOV-81
+JONES      02-APR-81 KING       17-NOV-81
+SMITH      17-DEC-80 FORD       03-DEC-81
+
+6 rows selected.
+
+How to join more than two tables
+======================================
+syntax for NON-ANSI format joins
+===============================
+select * from <tn1>,<tn2>,<tn3>,<tn4>,.................
+where <condition1>and<condition2> and <condition 3>,............;
+
+ex equijoin
+===========
+
+
+SQL> SELECT * FROM STUDENT;
+
+      STID SNAME             CID
+---------- ---------- ----------
+      1021 SMITH              10
+      1022 ALLEN              20
+      1023 MILLER             30
+
+SQL> SELECT * FROM COURSE;
+
+       CID CNAME            CFEE
+---------- ---------- ----------
+        10 C                1000
+        20 ORACLE           2500
+        40 JAVA             5000
+
+SQL> SELECT * FROM REGISTER;
+
+     REGNO REGDATE          CID
+---------- --------- ----------
+         1 20-OCT-21         10
+         2 21-OCT-21         20
+        22 22-OCT-21         50
+
+SQL> SELECT * FROM STUDENT S,COURSE C, REGISTER R WHERE S.CID=C.CID AND C.CID=R.CID;
+
+      STID SNAME             CID        CID CNAME            CFEE      REGNO REGDATE          CID
+---------- ---------- ---------- ---------- ---------- ---------- ---------- --------- ----------
+      1021 SMITH              10         10 C                1000          1 20-OCT-21         10
+      1022 ALLEN              20         20 ORACLE           2500          2 21-OCT-21         20
+
+      SYNTAX FOR ANSI FORMAT
+      ==========================
+      select * from <tn1><join key><tn2>on<condition1><join key><tn3> on <condition2><join key><tn4> on <condition 3>.,
+        ----------<join key><join key>on<condition n>
+
+
+        innner join
+        ================
+
+SQL> SELECT * FROM STUDENT S INNER JOIN COURSE C ON S.CID=C.CID INNER JOIN REGISTER R ON C.CID=R.CID;
+
+      STID SNAME             CID        CID CNAME            CFEE      REGNO REGDATE          CID
+---------- ---------- ---------- ---------- ---------- ---------- ---------- --------- ----------
+      1021 SMITH              10         10 C                1000          1 20-OCT-21         10
+      1022 ALLEN              20         20 ORACLE           2500          2 21-OCT-21         20
+
+Differences b/w joins & set operators
+====================================
+joins                                                   Set operators
+=====                                                   =============
+1.combining column wise                                  1.combinging row wise
+2.combined data in horizontal manner                     2.combined data in vertically
+3.it can perform different structures                    3.can perform same structure of tables
+of table.
+
+DATA INTEGRITY
+==============
+-accurate & consistency data in db tables.
+
+1.Declarative Data integrity.
+        -Pre-defined mechanism
+        -by using "Constraints"[SQL]
+2.Procedural Data integrity.
+        -User defined
+        -by using "Triggers"[PL/SQL]
+
+
+
+
+1.Declarative Data integrity.
+==============================
+i)Enity integrity
+=======================
+       - each and every row is uniquely identify in a table.
+       - Unique & Primary Key.
+ii)Referential integrity
+======================
+        -to make relationships between tables
+        -Foreign key | referential key
+iii)Domain integrity
+====================
+    -to check values before inserting into a column.
+    -Check,Not null,default
+
+Constraints
+==============
+        -to restrict unwanted data/ invalid data into a table.
+
+
+Types of constrainsts
+=====================
+-Unique
+-Not null
+-Check
+-Primary key
+-Foreign Key
+-Default
+
+Note: constraints are defining in two levels
+===================
+1.column level:
+=================
+        -to apply constraints on each column wise.
+
+syntax
+==========
+create table<tn>(
+<column name1><datatype>[size]<constrint type>,
+<column name2><datatype>[size]<constrint type>,
+-------------------------------------------------
+-------------------------------------------------
+
+)
+
+
+2.Table level
+===============
+-to apply constraint after all columns are defined i.e end of the table.
+create table <tn>(<col1><datatype[size]>,<col2><datatype>[size],..........<col n><datatype>[size],
+-----------------------<constrant type>(<col1>,<col2>,<col3>,..........
+)
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
