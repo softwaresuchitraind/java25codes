@@ -3084,6 +3084,829 @@ create table <tn>(<col1><datatype[size]>,<col2><datatype>[size],..........<col n
 )
 )
 
+Unique
+========
+-not allowed duplicate values but allowed nulls into a column.
+
+
+column level
+============
+
+SQL> CREATE TABLE TEST1(SNO INT UNIQUE,NAME VARCHAR2(10) UNIQUE);
+
+Table created.
+
+SQL> INSERT INTO TEST1 VALUES(101,'SAI');
+
+1 row created.
+
+SQL> INSERT INTO TEST1 VALUES(101,'SAI');
+INSERT INTO TEST1 VALUES(101,'SAI')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (MYDB4PM.SYS_C007588) violated
+
+
+SQL> INSERT INTO TEST1 VALUES(101,'ALLEN');
+INSERT INTO TEST1 VALUES(101,'ALLEN')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (MYDB4PM.SYS_C007588) violated
+
+
+SQL> SELECT * FROM TEST1;
+
+       SNO NAME
+---------- ----------
+       101 SAI
+
+SQL> INSERT INTO TEST1 VALUES(102,'SAI');
+INSERT INTO TEST1 VALUES(102,'SAI')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (MYDB4PM.SYS_C007589) violated
+
+
+SQL> INSERT INTO TEST1 VALUES(102,'ALLEN');
+
+1 row created.
+
+SQL> INSERT INTO TEST1 VALUES(103,'WARD');
+
+1 row created.
+
+SQL> INSERT INTO TEST1 VALUES(NULL,NULL);
+
+1 row created.
+
+SQL> INSERT INTO TEST1 VALUES(NULL,NULL);
+
+1 row created.
+
+SQL> INSERT INTO TEST1 VALUES(106,'SAM');
+
+1 row created.
+
+SQL> SELECT * FROM TEST1;
+
+       SNO NAME
+---------- ----------
+       101 SAI
+       102 ALLEN
+       103 WARD
+
+
+       106 SAM
+
+6 rows selected.
+
+.
+
+table level
+============
+SQL> CREATE TABLE TEST2(SNO INT,NAME VARCHAR2(10),UNIQUE(SNO,NAME));
+
+Table created
+
+SQL> INSERT INTO TEST2 VALUES(101,'SAI');
+
+1 row created.
+
+SQL> SELECT * FROM TEST2;
+
+       SNO NAME
+---------- ----------
+       101 SAI
+
+SQL> INSERT INTO TEST2 VALUES(101,'ALLEN');
+
+1 row created.
+
+SQL> INSERT INTO TEST2 VALUES(101,'SAI');
+INSERT INTO TEST2 VALUES(101,'SAI')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (MYDB4PM.SYS_C007590) violated
+
+EX
+====
+    IND VS AUS(UNIQUE)
+    IND VS SA(UNIQUE)
+    IND VS NZ(UNIQUE)
+
+    IND VS AUS(2nd MATCH/REPEATING COMBINATION)
+
+   Note
+   ========
+   when we apply constriant on multiple combination of columns then we called as "composite Unique" constraint.
+
+   Unique----------->apply on single column--------->simple unique constraint.
+   Unique----------->apply on multiple columns------->composite unique constraint.
+
+
+   Not Null
+   ===========
+    -not allowed NULLS but allowed duplicate values
+    -can apply at column level but not supporting at table level.
+
+   column level
+   ===========
+
+SQL> CREATE TABLE TEST3(EID INT NOT NULL,ENAME VARCHAR2(10) NOT NULL);
+
+Table created.
+
+SQL> INSERT INTO TEST3 VALUES(101,'ALLEN');
+
+1 row created.
+
+SQL> INSERT INTO TEST3 VALUES(101,'ALLEN');
+
+1 row created.
+
+SQL> INSERT INTO TEST3 VALUES(101,'ALLEN');
+
+1 row created.
+
+SQL> SELECT * FROM TEST3;
+
+       EID ENAME
+---------- ----------
+       101 ALLEN
+       101 ALLEN
+       101 ALLEN
+
+SQL> INSERT INTO TEST3 VALUES(NULL,'WARD');
+INSERT INTO TEST3 VALUES(NULL,'WARD')
+                         *
+ERROR at line 1:
+ORA-01400: cannot insert NULL into ("MYDB4PM"."TEST3"."EID")
+
+
+
+   Table level
+   ===========
+
+
+   SQL> CREATE TABLE TEST4(EID INT,ENAME VARCHAR2(10),NOT NULL(EID,ENAME));
+   CREATE TABLE TEST4(EID INT,ENAME VARCHAR2(10),NOT NULL(EID,ENAME))
+                                                 *
+   ERROR at line 1:
+   ORA-00904: : invalid identifier
+
+
+   Primary Key
+   ================
+   -to restricted duplicates & nulls.
+   -is the Combination Unique+Not null
+   -a table should contain only one primary key.
+
+
+   column levl
+   =============
+   CREATE TABLE TEST6(EID INT PRIMARY KEY,ENAME VARCHAR2(10));
+
+   table level
+   ===========
+   CREATE TABLE TEST7(CID INT,CNAME VARCHAR2(10),PRIMARY KEY(CID,CNAME));
+
+   NOTE-when we apply primary key constraint on multiple combination of columns then we called as "composite primary key".
+
+
+   Foreign key/References Key
+   ==========================
+   -to make relationship between tables then we use "foreign key".
+
+   basic rules
+   =============
+   1.we should have a common column name (optional) in both the tables.
+   2.common column datatype must be match(mandatory)
+   3.one table common column name is primary key and another table common column is foreign key.
+   4.primary key table is called as parent table & foreign key table is called child.
+   5.foreign key column value must be primary key value only.
+   6.by default foreign key is allowed duplicate & null values.
+
+   column level
+   =============
+
+SQL> INSERT INTO EMP1 VALUES(1025,'MILLER',NULL);
+
+1 row created.
+
+SQL> SELECT * FROM DEPT1;
+
+    DEPTNO DNAME
+---------- ----------
+        10 SALES
+        20 PRODUCTION
+
+SQL> SELECT * FROM EMP1;
+
+       EID ENAME          DEPTNO
+---------- ---------- ----------
+      1021 SAI                10
+      1022 JONES              10
+      1022 MILLER             20
+      1025 MILLER             20
+      1025 MILLER
+
+SQL> UPDATE EMP1 SET ENAME='SCOTT' WHERE DEPTNO=NULL;
+
+0 rows updated.
+
+SQL> UPDATE EMP1 SET DEPTNO=30 WHERE DEPTNO IS NULL;
+UPDATE EMP1 SET DEPTNO=30 WHERE DEPTNO IS NULL
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (MYDB4PM.SYS_C007600) violated - parent key not found
+
+
+SQL> UPDATE EMP1 SET DEPTNO=10 WHERE DEPTNO IS NULL;
+
+1 row updated.
+
+SQL>
+SQL>
+SQL>
+SQL>
+SQL>
+SQL>
+SQL> SELECT * FROM EMP1;
+
+       EID ENAME          DEPTNO
+---------- ---------- ----------
+      1021 SAI                10
+      1022 JONES              10
+      1022 MILLER             20
+      1025 MILLER             20
+      1025 MILLER             10
+
+Note:
+==========
+   once we created relationship between tables there are two rules are coming into picture those are,
+
+   1)Insertion rule
+   ====================
+    -We can not insert values into a child table(foreign key column)
+  those values are not existing in parent table(primary key column).
+
+  SQL> INSERT INTO EMP1 VALUES(1025,'MILLER',30);
+  INSERT INTO EMP1 VALUES(1025,'MILLER',30)
+  *
+  ERROR at line 1:
+  ORA-02291: integrity constraint (MYDB4PM.SYS_C007600) violated - parent key not found
+
+   2)Deletion Rule
+   =================
+
+we can not delete data from parent table because those parent parent data is having the
+corressponding child rows in child table.
+
+SQL> DELETE FROM DEPT1 WHERE DEPTNO=10;
+DELETE FROM DEPT1 WHERE DEPTNO=10
+*
+ERROR at line 1:
+ORA-02292: integrity constraint (MYDB4PM.SYS_C007600) violated - child record found
+
+NO PARENT = NO CHILD
+WITHOUT ADDRESSING CHILD WE CAN NOT DELETE PARENT.
+
+With addressing child we can delete
+.
+
+How to address the child ?
+==============================
+
+1.on delete cascade
+===================
+    -once we delete data from parent then corresponding child rows also deleted automatically.
+
+
+SQL> CREATE TABLE DEPT2(DEPTNO INT PRIMARY KEY,DNAME VARCHAR2(10));
+
+Table created.
+
+SQL> CREATE TABLE EMP2(EID INT,ENAME VARCHAR2(10),DEPTNO INT REFERENCES DEPT2(DEPTNO));
+
+Table created.
+
+SQL> DROP TABLE EMP2;
+
+Table dropped.
+
+SQL> CREATE TABLE EMP2(EID INT,ENAME VARCHAR2(10),DEPTNO INT REFERENCES DEPT2(DEPTNO) ON DELETE CASCADE);
+
+Table created.
+
+
+SQL> SELECT * FROM DEPT2;
+
+    DEPTNO DNAME
+---------- ----------
+        10 JAVA
+        20 DB
+
+SQL> SELECT * FROM EMP2;
+
+       EID ENAME          DEPTNO
+---------- ---------- ----------
+         1 ADAMS              10
+         2 JONES              10
+         3 ALLEN              20
+         4 WARD               20
+
+SQL> DELETE FROM DEPT2 WHERE DEPTNO=10;
+
+1 row deleted.
+
+SQL> SELECT * FROM EMP2;
+
+       EID ENAME          DEPTNO
+---------- ---------- ----------
+         3 ALLEN              20
+         4 WARD               20
+
+SQL> SELECT * FROM DEPT2;
+
+    DEPTNO DNAME
+---------- ----------
+        20 DB
+
+
+
+
+2.on delete set null.
+=====================
+-once we delete data from parent then corresponding child records are converting into NULL automatically.
+
+ex
+==
+
+SQL> CREATE TABLE DEPT3(DEPTNO INT PRIMARY KEY,DNAME VARCHAR2(10));
+
+Table created.
+
+SQL> INSERT INTO DEPT3 VALUES(10,'sap');
+
+1 row created.
+
+SQL> INSERT INTO DEPT3 VALUES(20,'DBA');
+
+1 row created.
+
+SQL> CREATE TABLE EMP3(EID INT,ENAME VARCHAR2(10),DEPTNO INT REFERENCES DEPT3(DEPTNO) ON DELETE SET NULL);
+
+Table created.
+
+SQL> INSERT INTO EMP3(&EID,'&ENAME',&DEPTNO);
+Enter value for eid: 1
+Enter value for ename: A
+Enter value for deptno: 10
+old   1: INSERT INTO EMP3(&EID,'&ENAME',&DEPTNO)
+new   1: INSERT INTO EMP3(1,'A',10)
+INSERT INTO EMP3(1,'A',10)
+                 *
+ERROR at line 1:
+ORA-00928: missing SELECT keyword
+
+
+SQL> INSERT INTO EMP3 VALUES(&EID,'&ENAME',&DEPTNO);
+Enter value for eid: 1
+Enter value for ename: A
+Enter value for deptno: 10
+old   1: INSERT INTO EMP3 VALUES(&EID,'&ENAME',&DEPTNO)
+new   1: INSERT INTO EMP3 VALUES(1,'A',10)
+
+1 row created.
+
+SQL> /
+Enter value for eid: B
+Enter value for ename:
+Enter value for deptno:
+old   1: INSERT INTO EMP3 VALUES(&EID,'&ENAME',&DEPTNO)
+new   1: INSERT INTO EMP3 VALUES(B,'',)
+INSERT INTO EMP3 VALUES(B,'',)
+                             *
+ERROR at line 1:
+ORA-00936: missing expression
+
+
+SQL>
+SQL> /
+Enter value for eid: 2
+Enter value for ename: B
+Enter value for deptno: 20
+old   1: INSERT INTO EMP3 VALUES(&EID,'&ENAME',&DEPTNO)
+new   1: INSERT INTO EMP3 VALUES(2,'B',20)
+
+1 row created.
+
+SQL> /
+Enter value for eid: 3
+Enter value for ename: C
+Enter value for deptno: 20
+old   1: INSERT INTO EMP3 VALUES(&EID,'&ENAME',&DEPTNO)
+new   1: INSERT INTO EMP3 VALUES(3,'C',20)
+
+1 row created.
+
+SQL> /
+Enter value for eid: 4
+Enter value for ename: D
+Enter value for deptno: 20
+old   1: INSERT INTO EMP3 VALUES(&EID,'&ENAME',&DEPTNO)
+new   1: INSERT INTO EMP3 VALUES(4,'D',20)
+
+1 row created.
+
+SQL> /
+Enter value for eid: 5
+Enter value for ename: E
+Enter value for deptno: 30
+old   1: INSERT INTO EMP3 VALUES(&EID,'&ENAME',&DEPTNO)
+new   1: INSERT INTO EMP3 VALUES(5,'E',30)
+INSERT INTO EMP3 VALUES(5,'E',30)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (MYDB4PM.SYS_C007613) violated - parent key not found
+
+
+SQL> SELECT * FROM DEPT3;
+
+    DEPTNO DNAME
+---------- ----------
+        10 sap
+        20 DBA
+
+SQL> SELECT * FROM EMP3;
+
+       EID ENAME          DEPTNO
+---------- ---------- ----------
+         1 A                  10
+         2 B                  20
+         3 C                  20
+         4 D                  20
+
+SQL> DELETE FROM DEPT3 WHERE DEPTNO=10;
+
+1 row deleted.
+
+SQL> SELECT * FROM DEPT3;
+
+    DEPTNO DNAME
+---------- ----------
+        20 DBA
+
+SQL> SELECT * FROM EMP3;
+
+       EID ENAME          DEPTNO
+---------- ---------- ----------
+         1 A
+         2 B                  20
+         3 C                  20
+
+
+
+
+
+LOGIN-MYDB4PM========================
+======================================================
+How to add constraint on existing table
+=======================================
+syntax
+========
+
+alter table<table name> add constraint<constraint key name><constraint type>(<column name>);
+
+ex
+====
+primary key
+==============
+
+SQL> CREATE TABLE PARENT(EID INT,ENAME VARCHAR2(10),SAL NUMBER);
+
+Table created.
+
+SQL> ALTER TABLE PARENT ADD CONSTRAINT PK_EID PRIMARY KEY(EID);
+
+Table altered.
+
+DATADICTIONARIES/READ ONLY TABLES/SYSTEM DEFINED TABLES
+========================================================
+-CONSTRAINT----------->DD1
+-VIEWS---------------->DD2
+-SYNONYMS-------------->DD3
+-INDEXES---------------->DD4
+
+all datadictionary in oracle db
+==================================
+syntax
+========
+SLECT * FROM DICT;
+
+NOTE
+========
+    if we want to view constraint information of a particular table in oracle database db then we use
+    the following datadictionary is "user_cons_columns"
+
+    SQL> SET LINES 100;
+    SQL> desc user_cons_columns;
+     Name                                                  Null?    Type
+     ----------------------------------------------------- -------- ------------------------------------
+     OWNER                                                 NOT NULL VARCHAR2(128)
+     CONSTRAINT_NAME                                       NOT NULL VARCHAR2(128)
+     TABLE_NAME                                            NOT NULL VARCHAR2(128)
+     COLUMN_NAME                                                    VARCHAR2(4000)
+     POSITION                                                       NUMBER
+
+    SQL> SELECT COLUMN_NAME,CONSTRAINT_NAME FROM user_cons_columns where TABLE_NAME='PARENT';
+
+    ADDING NOT NULL CONSTRAINT.
+    ========================
+    syntax
+    =======
+    alter table <table name > modify COLUMN NAME  CONSTRAINT CONNSTANT NAME NOT NULL
+
+    SQL> ALTER TABLE PARENT MODIFY ENAME CONSTRAINT NN_ENAME NOT NULL;
+
+    Table altered.
+
+    SQL> SELECT COLUMN_NAME,CONSTRAINT_NAME FROM USER_CONS_COLUMNS WHERE TABLE_NAME='PARENT';
+
+
+
+
+
+
+    ADDING foregin key constraint
+    =============================
+    alter table<tn> add constraint <constraint key name>
+    foreign key<common column of child table> references <parent table name>(<common column name>)
+
+    SQL> ALTER TABLE CHILD ADD CONSTRAINT FK_EID FOREIGN KEY(EID) REFERENCES PARENT(EID) ON DELETE CASCADE;
+
+    Table altered.
+
+
+    how to drop constraint from a table?
+    =======================================
+    Alter table <table name> drop constraint constaint_name;
+
+
+SQL> ALTER TABLE PARENT DROP CONSTRAINT PK_EID;
+ALTER TABLE PARENT DROP CONSTRAINT PK_EID
+                                   *
+ERROR at line 1:
+ORA-02273: this unique/primary key is referenced by some foreign keys
+
+SQL> ALTER TABLE PARENT DROP CONSTRAINT PK_EID CASCADE;
+
+Table altered.
+
+SQL> SELECT COLUMN_NAME,CONSTRAINT_NAME FROM USER_CONS_COLUMNS WHERE TABLE_NAME='PARENT';
+
+COLUMN_NAME
+--------------------------------------------------------------------------------
+CONSTRAINT_NAME
+--------------------------------------------------------------------------------
+SAL
+CHK_SAL
+
+ENAME
+NN_ENAME
+
+
+SQL> SELECT COLUMN_NAME,CONSTRAINT_NAME FROM USER_CONS_COLUMNS WHERE TABLE_NAME='CHILD';
+
+no rows selected
+
+============================================
+How to drop constraint from a table
+==================================
+syntax
+========
+alter table<table name> drop constraint<constraint key name>
+
+
+HOW TO rename constraint name:
+==================================
+syntax
+===========
+alter table<tn> rename constraint <old constraint name> to <new constraint name>
+
+SQL> CREATE TABLE TEST8(SNO INT UNIQUE);
+
+Table created.
+
+SQL> SELECT COLUMN_NAME,CONSTRAINT_NAME FROM USER_CONS_COLUMNS WHERE TABLE_NAME='TEST8';
+
+COLUMN_NAME
+----------------------------------------------------------------------------------------------------
+CONSTRAINT_NAME
+----------------------------------------------------------------------------------------------------
+SNO
+SYS_C007618
+
+
+SQL> ALTER TABLE TEST8 RENAME CONSTRAINT SYS_C007618 TO UQ_SNO;
+
+Table altered.
+
+SQL> SELECT COLUMN_NAME,CONSTRAINT_NAME FROM USER_CONS_COLUMNS WHERE TABLE_NAME='TEST8';
+
+COLUMN_NAME
+----------------------------------------------------------------------------------------------------
+CONSTRAINT_NAME
+----------------------------------------------------------------------------------------------------
+SNO
+UQ_SNO
+
+
+How to disable/enable constraint on existing table.
+=====================================================
+
+syntax
+=========
+alter table<tn> disable|enable constraint <constraint key name>;
+
+-by default all constraints are enable position(working)
+
+-if user want to disable a constraint then we follow the following method.
+
+SQL> ALTER TABLE TEST9 DISABLE CONSTRAINT SYS_C007619;
+SQL> ALTER TABLE TEST9 ENABLE CONSTRAINT SYS_C007619;
+ALTER TABLE TEST9 ENABLE CONSTRAINT SYS_C007619
+                                    *
+ERROR at line 1:
+ORA-02293: cannot validate (MYDB4PM.SYS_C007619) - check constraint violated
+
+NOVALIDATE
+============
+        -Existing data in a table is not varified but newly inserted data is varified.
+
+SQL> ALTER TABLE TEST9 ENABLE NOVALIDATE CONSTRAINT SYS_C007619;
+
+Table altered.
+SQL> INSERT INTO TEST9 VALUES('D',10000);
+INSERT INTO TEST9 VALUES('D',10000)
+*
+ERROR at line 1:
+ORA-02290: check constraint (MYDB4PM.SYS_C007619) violated
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
